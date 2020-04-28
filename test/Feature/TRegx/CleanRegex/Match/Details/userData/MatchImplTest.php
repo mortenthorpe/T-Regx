@@ -9,7 +9,7 @@ class MatchImplTest extends TestCase
     /**
      * @test
      */
-    public function shouldPreserveUserData_first()
+    public function shouldPreserveUserData_filter_first()
     {
         // given
         $filtered = pattern('[A-Z][a-z]+')
@@ -31,7 +31,7 @@ class MatchImplTest extends TestCase
     /**
      * @test
      */
-    public function shouldPreserveUserData_findFirst()
+    public function shouldPreserveUserData_filter_findFirst()
     {
         // given
         $filtered = pattern('[A-Z][a-z]+')
@@ -55,7 +55,7 @@ class MatchImplTest extends TestCase
     /**
      * @test
      */
-    public function shouldPreserveUserData_map()
+    public function shouldPreserveUserData_filter_map()
     {
         // given
         $filtered = pattern('[A-Z][a-z]+')

@@ -9,7 +9,7 @@ class MatchImplTest extends TestCase
     /**
      * @test
      */
-    public function shouldGetIndex_match_first()
+    public function shouldReceive_first_detailsIndex()
     {
         // given
         pattern('\d+')
@@ -26,7 +26,7 @@ class MatchImplTest extends TestCase
     /**
      * @test
      */
-    public function shouldGetIndex_match_findFirst()
+    public function shouldReceive_findFirst_detailsIndex()
     {
         // given
         pattern('\d+')
@@ -46,7 +46,7 @@ class MatchImplTest extends TestCase
      * @dataProvider iteratingMatchMethods
      * @param string $method
      */
-    public function shouldGetIndex_match(string $method)
+    public function shouldReceive_trio_detailsIndex(string $method)
     {
         // given
         $indexes = [];

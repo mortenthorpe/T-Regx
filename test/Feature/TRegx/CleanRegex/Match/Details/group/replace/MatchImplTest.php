@@ -9,7 +9,7 @@ class MatchImplTest extends TestCase
     /**
      * @test
      */
-    public function shouldReplaceGroup()
+    public function shouldDelegate_map_detailsGroupReplace()
     {
         // given
         $result = pattern('https?://(?<domain>[\w.]+)/users')
@@ -26,7 +26,7 @@ class MatchImplTest extends TestCase
     /**
      * @test
      */
-    public function shouldReplaceEmpty()
+    public function shouldDelegate_first_detailsGroupReplace_forEmptyString()
     {
         // given
         $result = pattern('https?://(?<domain>([\w.]+)?)/users')
@@ -43,7 +43,7 @@ class MatchImplTest extends TestCase
     /**
      * @test
      */
-    public function shouldReplace_utf8()
+    public function shouldDelegate_first_detailsGroupReplace_forStringUtf8()
     {
         // given
         $result = pattern('hłłps?://(?<domain>ąść)/users')

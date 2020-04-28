@@ -13,7 +13,7 @@ class AbstractMatchPatternTest extends TestCase
     /**
      * @test
      */
-    public function shouldFluent()
+    public function shouldDelegate_fluent_filter_map_map_all()
     {
         // when
         $result = pattern("(?<capital>[A-Z])?[\w']+")
@@ -40,7 +40,7 @@ class AbstractMatchPatternTest extends TestCase
     /**
      * @test
      */
-    public function shouldFluent_filterNth()
+    public function shouldDelegate_fluent_filter_map_nth()
     {
         // when
         $result = pattern("\w+")
@@ -61,7 +61,7 @@ class AbstractMatchPatternTest extends TestCase
     /**
      * @test
      */
-    public function shouldFluent_passUserData()
+    public function shouldPreserveUserData_fluent_filter_forEach()
     {
         // given
         pattern("\w+")
@@ -84,7 +84,7 @@ class AbstractMatchPatternTest extends TestCase
     /**
      * @test
      */
-    public function shouldFluent_findFirst()
+    public function shouldDelegate_fluent_filter_findFirst()
     {
         // when
         pattern("(?<capital>[A-Z])?[\w']+")
@@ -102,7 +102,7 @@ class AbstractMatchPatternTest extends TestCase
     /**
      * @test
      */
-    public function shouldFluent_findFirst_orThrow()
+    public function shouldThrow_fluent_findFirstOrThrow_onUnmatchedSubject()
     {
         // then
         $this->expectException(NoSuchElementFluentException::class);
@@ -119,7 +119,7 @@ class AbstractMatchPatternTest extends TestCase
     /**
      * @test
      */
-    public function shouldFluent_findFirst_orThrow_custom()
+    public function shouldThrow_fluent_findFirstOrThrow_customException_onUnmatchedSubject()
     {
         try {
             // when

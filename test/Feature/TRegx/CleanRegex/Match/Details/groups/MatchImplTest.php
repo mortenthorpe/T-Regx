@@ -10,7 +10,7 @@ class MatchImplTest extends TestCase
     /**
      * @test
      */
-    public function shouldGetEmptyMatchedGroup()
+    public function shouldDelegate_map_detailsGroupsTexts_forEmptyString()
     {
         // when
         $groups = pattern('([a-z]+)(?:\((\d*)\))?')
@@ -31,7 +31,7 @@ class MatchImplTest extends TestCase
     /**
      * @test
      */
-    public function shouldGetNamedGroup()
+    public function shouldReceive_first_detailsNamedGroupsTexts()
     {
         // given
         pattern('(?<one>first) and (?<two>second)')
@@ -52,7 +52,7 @@ class MatchImplTest extends TestCase
     /**
      * @test
      */
-    public function shouldGetGroupsOffsets_indexedGroups()
+    public function shouldReceive_first_detailsGroupsOffsets_batch()
     {
         // given
         pattern('(?<one>first ę) and (?<two>second)')
@@ -71,7 +71,7 @@ class MatchImplTest extends TestCase
     /**
      * @test
      */
-    public function shouldGetGroupsOffsets_namedGroups()
+    public function shouldReceive_first_detailsNamedGroupsOffsets_batch()
     {
         // given
         pattern('(?<one>first ę) and (?<two>second)')
@@ -90,7 +90,7 @@ class MatchImplTest extends TestCase
     /**
      * @test
      */
-    public function shouldGetGroupNames()
+    public function shouldReceive_first_detailsGroupNames()
     {
         // given
         pattern('(?<one>first) (and) (?<two>second)')
@@ -107,7 +107,7 @@ class MatchImplTest extends TestCase
     /**
      * @test
      */
-    public function shouldGetGroupsCount()
+    public function shouldReceive_first_detailsGroupsCount()
     {
         // given
         pattern('(?<one>first) and (second)')
@@ -124,7 +124,7 @@ class MatchImplTest extends TestCase
     /**
      * @test
      */
-    public function shouldNotHaveGroup()
+    public function shouldReceive_first_detailsHasGroup_forNonexistentGroup()
     {
         // given
         pattern('(?<one>first) and (?<two>second)')
@@ -141,7 +141,7 @@ class MatchImplTest extends TestCase
     /**
      * @test
      */
-    public function shouldHaveGroup()
+    public function shouldReceive_first_detailsHasGroup()
     {
         // given
         pattern('(?<existing>first) and (?<two_existing>second)')
@@ -158,7 +158,7 @@ class MatchImplTest extends TestCase
     /**
      * @test
      */
-    public function shouldGetGroupsNames()
+    public function shouldReceive_first_detailsGroupsNames_batch()
     {
         // given
         pattern('(zero) (?<existing>first) and (?<two_existing>second)')
@@ -169,15 +169,15 @@ class MatchImplTest extends TestCase
                 $namedGroups = $match->namedGroups()->names();
 
                 // then
-                $this->assertEquals($groupNames, [null, 'existing', 'two_existing']);
-                $this->assertEquals($namedGroups, ['existing', 'two_existing']);
+                $this->assertEquals([null, 'existing', 'two_existing'], $groupNames);
+                $this->assertEquals(['existing', 'two_existing'], $namedGroups);
             });
     }
 
     /**
      * @test
      */
-    public function shouldCount()
+    public function shouldReceive_first_detailsGroupsCount_batch()
     {
         // given
         pattern('(zero) (?<existing>first) and (?<two_existing>second)')
@@ -188,15 +188,15 @@ class MatchImplTest extends TestCase
                 $namedGroups = $match->namedGroups()->count();
 
                 // then
-                $this->assertEquals($groups, 3);
-                $this->assertEquals($namedGroups, 2);
+                $this->assertEquals(3, $groups);
+                $this->assertEquals(2, $namedGroups);
             });
     }
 
     /**
      * @test
      */
-    public function shouldThrowOnInvalidGroupName()
+    public function shouldThrow_first_detailsHasGroup_forInvalidGroup()
     {
         // then
         $this->expectException(InvalidArgumentException::class);

@@ -11,7 +11,7 @@ class MatchPatternTest extends TestCase
     /**
      * @test
      */
-    public function shouldGet_all()
+    public function shouldReturn_group_all()
     {
         // given
         $subject = 'Computer L Three Four';
@@ -26,7 +26,7 @@ class MatchPatternTest extends TestCase
     /**
      * @test
      */
-    public function shouldGet_all_unmatched()
+    public function shouldReturn_group_all_onUnmatchedSubject()
     {
         // given
         $subject = 'NOT MATCHING';
@@ -41,7 +41,7 @@ class MatchPatternTest extends TestCase
     /**
      * @test
      */
-    public function shouldGet_onlyOne_unmatched()
+    public function shouldReturn_group_only1_onUnmatchedSubject()
     {
         // given
         $subject = 'NOT MATCHING';
@@ -56,7 +56,7 @@ class MatchPatternTest extends TestCase
     /**
      * @test
      */
-    public function shouldThrow_all_nonexistent()
+    public function shouldThrow_group_all_forNonexistentGroup()
     {
         // then
         $this->expectException(NonexistentGroupException::class);
@@ -69,7 +69,7 @@ class MatchPatternTest extends TestCase
     /**
      * @test
      */
-    public function shouldThrow_fluent_nonexistent()
+    public function shouldThrow_group_fluent_all_forNonexistentGroup()
     {
         // then
         $this->expectException(NonexistentGroupException::class);
@@ -82,7 +82,7 @@ class MatchPatternTest extends TestCase
     /**
      * @test
      */
-    public function shouldThrow_first_nonexistent()
+    public function shouldThrow_group_first_forNonexistentGroup()
     {
         // then
         $this->expectException(NonexistentGroupException::class);
@@ -95,7 +95,7 @@ class MatchPatternTest extends TestCase
     /**
      * @test
      */
-    public function shouldThrow_first_consumer_nonexistent()
+    public function shouldThrow_group_findFirst_forNonexistentGroup()
     {
         // then
         $this->expectException(NonexistentGroupException::class);
@@ -108,7 +108,7 @@ class MatchPatternTest extends TestCase
     /**
      * @test
      */
-    public function shouldThrow_onlyOne_nonexistent()
+    public function shouldThrow_group_only1_forNonexistentGroup()
     {
         // then
         $this->expectException(NonexistentGroupException::class);
@@ -121,7 +121,7 @@ class MatchPatternTest extends TestCase
     /**
      * @test
      */
-    public function shouldGet_only()
+    public function shouldReturn_group_only()
     {
         // when
         $groups1 = pattern('[A-Z](?<lowercase>[a-z]+)?')->match('D Computer')->group('lowercase')->only(1);
@@ -135,7 +135,7 @@ class MatchPatternTest extends TestCase
     /**
      * @test
      */
-    public function shouldMap()
+    public function shouldDelegate_group_map_detailsText()
     {
         // when
         $groups = pattern('[A-Z](?<lowercase>[a-z]+)?')
@@ -155,7 +155,7 @@ class MatchPatternTest extends TestCase
     /**
      * @test
      */
-    public function shouldFilter()
+    public function shouldDelegate_group_filter_detailsText()
     {
         // when
         $groups = pattern('\d+(?<unit>kg|[cm]?m)')
@@ -172,7 +172,7 @@ class MatchPatternTest extends TestCase
     /**
      * @test
      */
-    public function shouldFilter_fluent()
+    public function shouldDelegate_group_fluent_filter_all_detailsText()
     {
         // when
         $groups = pattern('\d+(?<unit>kg|[cm]?m)')
@@ -191,7 +191,7 @@ class MatchPatternTest extends TestCase
     /**
      * @test
      */
-    public function shouldMap_fluent()
+    public function shouldDelegate_group_fluent_map_all_detailsText()
     {
         // when
         $groups = pattern('[A-Z](?<lowercase>[a-z]+)?')
@@ -213,7 +213,7 @@ class MatchPatternTest extends TestCase
     /**
      * @test
      */
-    public function shouldGet_offsets()
+    public function shouldReturn_group_offsets_mixed()
     {
         // given
         $offsets = pattern('[A-Z](?<lowercase>[a-z]+)?')
@@ -235,7 +235,7 @@ class MatchPatternTest extends TestCase
     /**
      * @test
      */
-    public function shouldGet_offsets_onlyOne_null()
+    public function shouldReturn_group_offsets_only1()
     {
         // given
         $offsets = pattern('[A-Z](?<lowercase>[a-z]+)?')

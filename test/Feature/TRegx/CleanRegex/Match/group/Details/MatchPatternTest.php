@@ -10,15 +10,15 @@ class MatchPatternTest extends TestCase
     /**
      * @test
      */
-    public function test()
+    public function shouldDelegate_group_map_detailsText()
     {
-        // given
-        $subject = 'Foo Bar Car';
-
         // when
-        $result = pattern('[A-Z](?<lowercase>[a-z]+)?')->match($subject)->group('lowercase')->map(function (MatchGroup $group) {
-            return $group->text();
-        });
+        $result = pattern('[A-Z](?<lowercase>[a-z]+)?')
+            ->match('Foo Bar Car')
+            ->group('lowercase')
+            ->map(function (MatchGroup $group) {
+                return $group->text();
+            });
 
         // then
         $this->assertEquals(['oo', 'ar', 'ar'], $result);
@@ -27,7 +27,7 @@ class MatchPatternTest extends TestCase
     /**
      * @test
      */
-    public function shouldFlatMap()
+    public function shouldDelegate_group_flatMap_detailsTextOffsetAll()
     {
         // given
         $subject = 'XXX:abc YYY:efg ZZZ:ijk';
@@ -49,7 +49,7 @@ class MatchPatternTest extends TestCase
     /**
      * @test
      */
-    public function shouldGetOffset()
+    public function shouldDelegate_group_map_detailsOffset()
     {
         // given
         $subject = 'Foo Bar Car';
@@ -66,7 +66,7 @@ class MatchPatternTest extends TestCase
     /**
      * @test
      */
-    public function test_unmatchedGroup()
+    public function shouldThrow_group_map_detailsText_forUnmatchedGroup()
     {
         // given
         $subject = 'Computer L Three Four';

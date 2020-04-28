@@ -13,7 +13,7 @@ class MatchImplTest extends TestCase
      * @param string $string
      * @param int $expected
      */
-    public function shouldParseInt(string $string, int $expected)
+    public function shouldDelegate_first_detailsToInt(string $string, int $expected)
     {
         // given
         $result = pattern('-?\w+')
@@ -27,7 +27,7 @@ class MatchImplTest extends TestCase
         $this->assertEquals($expected, $result);
     }
 
-    public function validIntegers()
+    public function validIntegers(): array
     {
         return [
             ['1', 1],
@@ -42,7 +42,7 @@ class MatchImplTest extends TestCase
     /**
      * @test
      */
-    public function shouldThrow_forPseudoInteger_becausePhpSucks()
+    public function shouldThrow_first_forPseudoIntegerBecausePhpSucks()
     {
         // then
         $this->expectException(IntegerFormatException::class);
@@ -60,7 +60,7 @@ class MatchImplTest extends TestCase
     /**
      * @test
      */
-    public function shouldThrow_forInvalidInteger()
+    public function shouldThrow_first_forInvalidInteger()
     {
         // then
         $this->expectException(IntegerFormatException::class);

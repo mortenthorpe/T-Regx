@@ -12,7 +12,7 @@ class MatchImplTest extends TestCase
     /**
      * @test
      */
-    public function shouldGetGroup()
+    public function shouldReceive_first_detailsGet()
     {
         // given
         pattern('Hello (?<one>there)')->match('Hello there, General Kenobi')->first(function (Match $match) {
@@ -26,11 +26,11 @@ class MatchImplTest extends TestCase
 
     /**
      * @test
-     * @dataProvider shouldGroup_notMatch_dataProvider
+     * @dataProvider patternAndSubject
      * @param string $pattern
      * @param string $subject
      */
-    public function shouldGroup_notMatch(string $pattern, string $subject)
+    public function shouldThrow_first_detailsGet_forUnmatchedGroup(string $pattern, string $subject)
     {
         // then
         $this->expectException(GroupNotMatchedException::class);
@@ -43,7 +43,7 @@ class MatchImplTest extends TestCase
         });
     }
 
-    public function shouldGroup_notMatch_dataProvider()
+    public function patternAndSubject(): array
     {
         return [
             ['Hello (?<one>there)?', 'Hello XX, General Kenobi'],
@@ -54,7 +54,7 @@ class MatchImplTest extends TestCase
     /**
      * @test
      */
-    public function shouldThrow_onMissingGroup()
+    public function shouldThrow_first_detailsGet_forNonexistentGroup()
     {
         // then
         $this->expectException(NonexistentGroupException::class);
@@ -70,7 +70,7 @@ class MatchImplTest extends TestCase
     /**
      * @test
      */
-    public function shouldValidateGroupName()
+    public function shouldThrow_first_detailsGroup_forInvalidGroup()
     {
         // then
         $this->expectException(InvalidArgumentException::class);

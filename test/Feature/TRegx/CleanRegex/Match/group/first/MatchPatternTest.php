@@ -12,7 +12,7 @@ class MatchPatternTest extends TestCase
     /**
      * @test
      */
-    public function test()
+    public function shouldReturn_group_first()
     {
         // given
         $subject = 'Computer L Three Four';
@@ -27,7 +27,7 @@ class MatchPatternTest extends TestCase
     /**
      * @test
      */
-    public function shouldGet_forEmptyMatch()
+    public function shouldReturn_group_first_forEmptyGroup()
     {
         // given
         $subject = 'Foo NOT MATCH';
@@ -42,7 +42,7 @@ class MatchPatternTest extends TestCase
     /**
      * @test
      */
-    public function shouldCall_withDetails()
+    public function shouldReceive_group_first_detailsText()
     {
         // given
         $subject = 'Computer L Three Four';
@@ -56,7 +56,7 @@ class MatchPatternTest extends TestCase
     /**
      * @test
      */
-    public function shouldCall_withDetails_all()
+    public function shouldReceive_group_first_detailsAll()
     {
         // given
         $subject = 'Computer L Three Four';
@@ -70,7 +70,7 @@ class MatchPatternTest extends TestCase
     /**
      * @test
      */
-    public function shouldCall_withDetails_string()
+    public function shouldReceive_group_first_detailsAsString()
     {
         // given
         $subject = 'Computer L Three Four';
@@ -84,23 +84,20 @@ class MatchPatternTest extends TestCase
     /**
      * @test
      */
-    public function shouldThrow_unmatched()
+    public function shouldThrow_group_first_forUnmatchedGroup()
     {
-        // given
-        $subject = 'L Three Four';
-
         // then
         $this->expectException(GroupNotMatchedException::class);
         $this->expectExceptionMessage("Expected to get group 'lowercase' from the first match, but the group was not matched");
 
         // when
-        pattern('[A-Z](?<lowercase>[a-z]+)?')->match($subject)->group('lowercase')->first();
+        pattern('[A-Z](?<lowercase>[a-z]+)?')->match('L Three Four')->group('lowercase')->first();
     }
 
     /**
      * @test
      */
-    public function shouldThrow_subject_unmatched()
+    public function shouldThrow_group_first_onUnmatchedSubject()
     {
         // then
         $this->expectException(SubjectNotMatchedException::class);
@@ -113,23 +110,20 @@ class MatchPatternTest extends TestCase
     /**
      * @test
      */
-    public function shouldThrow_nonexistent()
+    public function shouldThrow_group_first_forNonexistentGroup()
     {
-        // given
-        $subject = 'L Three Four';
-
         // then
         $this->expectException(NonexistentGroupException::class);
         $this->expectExceptionMessage("Nonexistent group: 'missing'");
 
         // when
-        pattern('[A-Z](?<lowercase>[a-z]+)?')->match($subject)->group('missing')->first();
+        pattern('[A-Z](?<lowercase>[a-z]+)?')->match('L Three Four')->group('missing')->first();
     }
 
     /**
      * @test
      */
-    public function shouldGet_offsets()
+    public function shouldReturn_group_offsets_first()
     {
         // when
         $first = pattern('[A-Z](?<lowercase>[a-z]+)?')

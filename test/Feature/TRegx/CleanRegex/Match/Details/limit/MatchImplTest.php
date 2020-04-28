@@ -9,7 +9,7 @@ class MatchImplTest extends TestCase
     /**
      * @test
      */
-    public function shouldNotBeLimited_match_forEach()
+    public function shouldReceive_forEach_detailsIndex()
     {
         // given
         pattern('\d+')
@@ -26,7 +26,7 @@ class MatchImplTest extends TestCase
     /**
      * @test
      */
-    public function shouldNotBeLimited_match_map()
+    public function shouldReceive_map_detailsLimit()
     {
         // given
         pattern('\d+')
@@ -43,7 +43,7 @@ class MatchImplTest extends TestCase
     /**
      * @test
      */
-    public function shouldNotBeLimited_match_flatMap()
+    public function shouldReceive_flatMap_detailsLimit()
     {
         // given
         pattern('\d+')
@@ -63,7 +63,7 @@ class MatchImplTest extends TestCase
     /**
      * @test
      */
-    public function shouldBeLimited_match_first()
+    public function shouldReceive_first_detailsLimit()
     {
         // given
         pattern('\d+')
@@ -80,7 +80,7 @@ class MatchImplTest extends TestCase
     /**
      * @test
      */
-    public function shouldBeLimited_match_findFirst()
+    public function shouldReceive_findFirst_detailsLimit()
     {
         // given
         pattern('\d+')

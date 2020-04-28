@@ -11,7 +11,7 @@ class MatchImplTest extends TestCase
     /**
      * @test
      */
-    public function shouldGetGroup()
+    public function shouldReceive_first_detailsGroup_batch()
     {
         // given
         pattern('Hello (?<one>there)')
@@ -31,7 +31,7 @@ class MatchImplTest extends TestCase
     /**
      * @test
      */
-    public function shouldGet_groupTextLength()
+    public function shouldReceive_first_detailsGroupTextLength()
     {
         // given
         pattern('(\p{L}+)', 'u')
@@ -46,7 +46,7 @@ class MatchImplTest extends TestCase
     /**
      * @test
      */
-    public function shouldGetGroup_all_matched()
+    public function shouldReceive_first_detailsGroupAll()
     {
         // given
         pattern('Hello (?<one>there|here)?')
@@ -65,7 +65,7 @@ class MatchImplTest extends TestCase
     /**
      * @test
      */
-    public function shouldGetGroup_all_unmatched()
+    public function shouldReceive_first_detailsGroupAll_forOneUnmatchedGroup()
     {
         // given
         pattern('Hello (?<one>there|here)?')
@@ -82,7 +82,7 @@ class MatchImplTest extends TestCase
     /**
      * @test
      */
-    public function shouldGetGroup_empty_string()
+    public function shouldReceive_first_detailsGroupAll_forEmptyString()
     {
         // when
         pattern('Hello (?<one>there|here|)')
@@ -100,11 +100,11 @@ class MatchImplTest extends TestCase
 
     /**
      * @test
-     * @dataProvider shouldGroup_notMatch_dataProvider
+     * @dataProvider patternAndSubject
      * @param string $pattern
      * @param string $subject
      */
-    public function shouldGroup_notMatch(string $pattern, string $subject)
+    public function shouldReceive_first_detailsGroupMatched_onUnmatchedSubject(string $pattern, string $subject)
     {
         // given
         pattern($pattern)->match($subject)->first(function (Match $match) {
@@ -118,7 +118,7 @@ class MatchImplTest extends TestCase
         });
     }
 
-    public function shouldGroup_notMatch_dataProvider()
+    public function patternAndSubject(): array
     {
         return [
             ['Hello (?<one>there)?', 'Hello XX, General Kenobi'],
@@ -129,7 +129,7 @@ class MatchImplTest extends TestCase
     /**
      * @test
      */
-    public function shouldThrow_onMissingGroup()
+    public function shouldThrow_first_detailsGroupByName_onMissingGroup()
     {
         // then
         $this->expectException(NonexistentGroupException::class);
@@ -146,7 +146,7 @@ class MatchImplTest extends TestCase
     /**
      * @test
      */
-    public function shouldValidateGroupName()
+    public function shouldThrow_first_detailsGroup_forInvalidGroup()
     {
         // then
         $this->expectException(InvalidArgumentException::class);

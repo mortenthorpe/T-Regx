@@ -10,7 +10,7 @@ class MatchImplTest extends TestCase
     /**
      * @test
      */
-    public function shouldBsInt()
+    public function shouldDelegate_first_detailsGroupIsInt()
     {
         // given
         $result = pattern('(?<name>-?\w+)')
@@ -27,7 +27,7 @@ class MatchImplTest extends TestCase
     /**
      * @test
      */
-    public function shouldPseudoInteger_notBeInt_becausePhpSucks()
+    public function shouldDelegate_first_detailsGroupIsInt_forPseudoIntegerBecausePhpSucks()
     {
         // given
         $result = pattern('(.*)', 's')
@@ -44,7 +44,7 @@ class MatchImplTest extends TestCase
     /**
      * @test
      */
-    public function shouldBesInt_byName()
+    public function shouldReceive_forEach_detailsGroupByNameIsInt()
     {
         // given
         pattern('(?<value>\d+)')
@@ -61,7 +61,7 @@ class MatchImplTest extends TestCase
     /**
      * @test
      */
-    public function shouldBsInt_byIndex()
+    public function shouldReceive_map_detailsGroupIsInt()
     {
         // given
         pattern('(?<value>\d+)')
@@ -78,7 +78,7 @@ class MatchImplTest extends TestCase
     /**
      * @test
      */
-    public function shouldNotBeInteger_byName()
+    public function shouldReceive_first_detailsGroupByNameIsInt_notInt()
     {
         // given
         pattern('(?<name>\w+)')
@@ -95,7 +95,7 @@ class MatchImplTest extends TestCase
     /**
      * @test
      */
-    public function shouldNotBeInteger_byIndex()
+    public function shouldDelegate_first_detailsGroupIsInt_notInt()
     {
         // given
         pattern('(?<name>\w+)')
@@ -112,7 +112,7 @@ class MatchImplTest extends TestCase
     /**
      * @test
      */
-    public function shouldThrowForUnmatchedGroup()
+    public function shouldThrow_first_detailsGroupByNameIsInt_forUnmatchedGroup()
     {
         // then
         $this->expectException(GroupNotMatchedException::class);

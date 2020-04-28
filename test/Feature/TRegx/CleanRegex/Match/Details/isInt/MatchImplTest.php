@@ -10,75 +10,7 @@ class MatchImplTest extends TestCase
     /**
      * @test
      */
-    public function shouldBsInt()
-    {
-        // given
-        $result = pattern('(?<name>-?\w+)')
-            ->match('11')
-            ->first(function (Match $match) {
-                // when
-                return $match->group(1)->isInt();
-            });
-
-        // then
-        $this->assertTrue($result);
-    }
-
-    /**
-     * @test
-     */
-    public function shouldPseudoInteger_notBeInt_becausePhpSucks()
-    {
-        // given
-        $result = pattern('(.*)', 's')
-            ->match('1e3')
-            ->first(function (Match $match) {
-                // when
-                return $match->group(1)->isInt();
-            });
-
-        // then
-        $this->assertFalse($result);
-    }
-
-    /**
-     * @test
-     */
-    public function shouldBesInt_byName()
-    {
-        // given
-        pattern('(?<value>\d+)')
-            ->match('12cm 14mm 13cm 19cm 18mm 2mm')
-            ->forEach(function (Match $match) {
-                // when
-                $isInt = $match->group('value')->isInt();
-
-                // then
-                $this->assertTrue($isInt);
-            });
-    }
-
-    /**
-     * @test
-     */
-    public function shouldBsInt_byIndex()
-    {
-        // given
-        pattern('(?<value>\d+)')
-            ->match('12cm 14mm 13cm 19cm 18mm 2mm')
-            ->map(function (Match $match) {
-                // when
-                $isInt = $match->group(1)->isInt();
-
-                // then
-                $this->assertTrue($isInt);
-            });
-    }
-
-    /**
-     * @test
-     */
-    public function shouldNotBeInteger_byName()
+    public function shouldReceive_first_detailsGroupByNameIsInt_forInvalidInteger()
     {
         // given
         pattern('(?<name>\w+)')
@@ -95,7 +27,7 @@ class MatchImplTest extends TestCase
     /**
      * @test
      */
-    public function shouldNotBeInteger_byIndex()
+    public function shouldReceive_first_detailsGroupIsInt_forInvalidInteger()
     {
         // given
         pattern('(?<name>\w+)')
@@ -112,7 +44,7 @@ class MatchImplTest extends TestCase
     /**
      * @test
      */
-    public function shouldThrowForUnmatchedGroup()
+    public function shouldThrow_first_detailsGroupIsInt_forUnmatchedGroup()
     {
         // then
         $this->expectException(GroupNotMatchedException::class);

@@ -3,6 +3,7 @@ namespace Test\Feature\TRegx\CleanRegex\Match;
 
 use PHPUnit\Framework\TestCase;
 use Test\Utils\Functions;
+use Test\Utils\Verification\VerifyFeatureNames;
 use TRegx\CleanRegex\Exception\GroupNotMatchedException;
 use TRegx\CleanRegex\Exception\NoSuchElementFluentException;
 use TRegx\CleanRegex\Exception\SubjectNotMatchedException;
@@ -15,7 +16,7 @@ class MatchPatternTest extends TestCase
     /**
      * @test
      */
-    public function shouldGet_all()
+    public function shouldReturn_all()
     {
         // when
         $matches = pattern('Foo (B(ar))')->match('Foo Bar, Foo Bar, Foo Bar')->all();
@@ -27,7 +28,7 @@ class MatchPatternTest extends TestCase
     /**
      * @test
      */
-    public function shouldGet_only_2()
+    public function shouldReturn_only2()
     {
         // when
         $matches = pattern('Foo (B(ar))')->match('Foo Bar, Foo Bar, Foo Bar')->only(2);
@@ -39,7 +40,7 @@ class MatchPatternTest extends TestCase
     /**
      * @test
      */
-    public function shouldGet_first()
+    public function shouldReturn_first()
     {
         // when
         $match = pattern('Foo (B(ar))')->match('Foo Bar, Foo Bar, Foo Bar')->first();
@@ -51,7 +52,7 @@ class MatchPatternTest extends TestCase
     /**
      * @test
      */
-    public function shouldGet_first_callback()
+    public function shouldPass_first()
     {
         // when
         $value = pattern('[A-Za-z]{4}\.')->match('What do you need? - Guns.')->first(function (Match $match) {
@@ -65,12 +66,10 @@ class MatchPatternTest extends TestCase
     /**
      * @test
      */
-    public function shouldGet_first_returnArbitraryType()
+    public function shouldPass_first_returnArbitraryType()
     {
         // when
-        $value = pattern('[A-Z]+')
-            ->match('F')
-            ->first(Functions::constant(new \stdClass()));
+        $value = pattern('[A-Z]+')->match('F')->first(Functions::constant(new \stdClass()));
 
         // then
         $this->assertInstanceOf(\stdClass::class, $value);
@@ -79,7 +78,7 @@ class MatchPatternTest extends TestCase
     /**
      * @test
      */
-    public function shouldGet_first_matchAll()
+    public function shouldReceive_first_detailsAll()
     {
         // when
         pattern('(?<capital>[A-Z])(?<lowercase>[a-z]+)')
@@ -93,7 +92,7 @@ class MatchPatternTest extends TestCase
     /**
      * @test
      */
-    public function shouldGet_findFirst_orElse()
+    public function shouldPass_findFirst()
     {
         // when
         $value = pattern('[A-Z]+')
@@ -108,7 +107,7 @@ class MatchPatternTest extends TestCase
     /**
      * @test
      */
-    public function shouldGet_findFirst_orElse_groupsCount()
+    public function shouldPass_findFirstOrElse_notMatchedGroupsCount()
     {
         // when
         $value = pattern('[a-z]+')
@@ -127,7 +126,7 @@ class MatchPatternTest extends TestCase
     /**
      * @test
      */
-    public function shouldGet_map()
+    public function shouldPass_map()
     {
         // when
         $mapped = pattern('[A-Za-z]+')->match('Foo, Bar, Top')->map(function (Match $match) {
@@ -146,7 +145,7 @@ class MatchPatternTest extends TestCase
     /**
      * @test
      */
-    public function shouldGet_distinct()
+    public function shouldReturn_distinct()
     {
         // when
         $mapped = pattern('[A-Za-z]+')->match('One, One, Two, One, Three, Two, One')->distinct();
@@ -158,7 +157,7 @@ class MatchPatternTest extends TestCase
     /**
      * @test
      */
-    public function shouldGet_flatMap()
+    public function shouldPass_flatMap()
     {
         // when
         $mapped = pattern('[A-Za-z]+')->match('Foo, Bar, Top')->flatMap(function (Match $match) {
@@ -172,12 +171,10 @@ class MatchPatternTest extends TestCase
     /**
      * @test
      */
-    public function shouldNotCall_forEach_onUnmatchedPattern()
+    public function shouldNotCall_forEach_onUnmatchedSubject()
     {
         // given
-        pattern('dont match me')
-            ->match('word')
-            ->forEach(Functions::fail());
+        pattern('pattern')->match('dont match me')->forEach(Functions::fail());
 
         // then
         $this->assertTrue(true);
@@ -186,27 +183,23 @@ class MatchPatternTest extends TestCase
     /**
      * @test
      */
-    public function shouldNotCall_first_OnUnmatchedPattern()
+    public function shouldThrow_first_onUnmatchedSubject()
     {
         // then
         $this->expectException(SubjectNotMatchedException::class);
         $this->expectExceptionMessage('Expected to get the first match, but subject was not matched');
 
         // given
-        pattern('pattern')
-            ->match('dont match me')
-            ->first(Functions::fail());
+        pattern('pattern')->match('dont match me')->first(Functions::fail());
     }
 
     /**
      * @test
      */
-    public function shouldGet_offsets()
+    public function shouldReturn_offsets()
     {
         // given
-        $offsets = pattern('[A-Z](?<lowercase>[a-z]+)?')
-            ->match('xd Computer L Three Four')
-            ->offsets();
+        $offsets = pattern('[A-Z](?<lowercase>[a-z]+)?')->match('xd Computer L Three Four')->offsets();
 
         // when
         $first = $offsets->first();
@@ -224,66 +217,53 @@ class MatchPatternTest extends TestCase
     /**
      * @test
      */
-    public function shouldNotCall_offsets_first_OnUnmatchedPattern()
+    public function shouldNotCall_offsets_first_onUnmatchedSubject()
     {
         // then
         $this->expectException(SubjectNotMatchedException::class);
         $this->expectExceptionMessage("Expected to get the first match offset, but subject was not matched");
 
         // given
-        pattern('dont match me')
-            ->match('word')
-            ->offsets()
-            ->first();
+        pattern('pattern')->match('dont match me')->offsets()->first();
     }
 
     /**
      * @test
      */
-    public function shouldThrow_asInt_first_OnUnmatchedPattern()
+    public function shouldThrow_asInt_first_onUnmatchedSubject()
     {
         // then
         $this->expectException(SubjectNotMatchedException::class);
         $this->expectExceptionMessage("Expected to get the first match as int, but subject was not matched");
 
         // given
-        pattern('dont match me')
-            ->match('word')
-            ->asInt()
-            ->first();
+        pattern('pattern')->match('dont match me')->asInt()->first();
     }
 
     /**
      * @test
      */
-    public function shouldThrow_asArray_first_OnUnmatchedPattern()
+    public function shouldThrow_asArray_first_onUnmatchedSubject()
     {
         // then
         $this->expectException(SubjectNotMatchedException::class);
         $this->expectExceptionMessage("Expected to get the first match as array, but subject was not matched");
 
         // given
-        pattern('dont match me')
-            ->match('word')
-            ->asArray()
-            ->first();
+        pattern('pattern')->match('dont match me')->asArray()->first();
     }
 
     /**
      * @test
      */
-    public function shouldThrow_asInt_findFirst_OnUnmatchedPattern()
+    public function shouldThrow_asInt_findFirst_onUnmatchedSubject()
     {
         // then
         $this->expectException(NoSuchElementFluentException::class);
         $this->expectExceptionMessage("Expected to get the first match as int, but subject was not matched");
 
         // given
-        pattern('dont match me')
-            ->match('word')
-            ->asInt()
-            ->findFirst([$this, 'fail'])
-            ->orThrow();
+        pattern('pattern')->match('dont match me')->asInt()->findFirst([$this, 'fail'])->orThrow();
     }
 
     /**
@@ -304,7 +284,7 @@ class MatchPatternTest extends TestCase
     /**
      * @test
      */
-    public function shouldCount_matched()
+    public function shouldBe_countable()
     {
         // when
         $count = count(pattern('Foo (B(ar))')->match('Foo Bar, Foo Bar, Foo Bar'));
@@ -316,7 +296,7 @@ class MatchPatternTest extends TestCase
     /**
      * @test
      */
-    public function shouldFilter_all()
+    public function shouldDelegate_filter_all()
     {
         // when
         $filtered = pattern('[A-Z][a-z]+')->match('First, Second, Third, Fourth, Fifth')
@@ -332,7 +312,7 @@ class MatchPatternTest extends TestCase
     /**
      * @test
      */
-    public function shouldFilter_only_2()
+    public function shouldDelegate_filter_only2()
     {
         // when
         $filtered = pattern('[A-Z][a-z]+')->match('First, Second, Third, Fourth, Fifth')
@@ -348,7 +328,7 @@ class MatchPatternTest extends TestCase
     /**
      * @test
      */
-    public function shouldFilter_only_1()
+    public function shouldDelegate_filter_only1()
     {
         // when
         $filtered = pattern('[A-Z][a-z]+')->match('First, Second, Third, Fourth, Fifth')
@@ -364,7 +344,7 @@ class MatchPatternTest extends TestCase
     /**
      * @test
      */
-    public function shouldFilter_only_1_filteredOut()
+    public function shouldDelegate_filter_only1_filteredOut()
     {
         // when
         $filtered = pattern('[A-Z][a-z]+')->match('First, Second, Third, Fourth, Fifth')
@@ -378,7 +358,7 @@ class MatchPatternTest extends TestCase
     /**
      * @test
      */
-    public function shouldFilter_count()
+    public function shouldDelegate_filter_count()
     {
         // when
         $filtered = pattern('[A-Z][a-z]+')->match('First, Second, Third, Fourth, Fifth')
@@ -394,7 +374,7 @@ class MatchPatternTest extends TestCase
     /**
      * @test
      */
-    public function shouldFilter_first()
+    public function shouldDelegate_filter_first()
     {
         // when
         $filtered = pattern('[A-Z][a-z]+')->match('First, Second, Third, Fourth, Fifth')
@@ -410,7 +390,7 @@ class MatchPatternTest extends TestCase
     /**
      * @test
      */
-    public function shouldFilter_matches_true()
+    public function shouldDelegate_filter_test()
     {
         // when
         $matches = pattern('[A-Z][a-z]+')->match('First, Second, Third, Fourth, Fifth')
@@ -426,7 +406,7 @@ class MatchPatternTest extends TestCase
     /**
      * @test
      */
-    public function shouldFilter_matches_false()
+    public function shouldDelegate_filter_test_filteredOut()
     {
         // when
         $matches = pattern('[A-Z][a-z]+')->match('First, Second, Third, Fourth, Fifth')
@@ -440,7 +420,7 @@ class MatchPatternTest extends TestCase
     /**
      * @test
      */
-    public function shouldFilter_matches_notMatched()
+    public function shouldDelegate_filter_test_onUnmatchedSubject()
     {
         // when
         $matches = pattern('[A-Z][a-z]+')->match('NOT MATCHING')
@@ -454,7 +434,7 @@ class MatchPatternTest extends TestCase
     /**
      * @test
      */
-    public function shouldGetAllMatches_asInt()
+    public function shouldReturn_asInt_all()
     {
         // given
         $subject = "I’ll have two number 9s, a number 9 large, a number 6 with extra dip, a number 7, two number 45s, one with cheese, and a large soda.";
@@ -469,7 +449,7 @@ class MatchPatternTest extends TestCase
     /**
      * @test
      */
-    public function shouldGetAllMatches_asArray()
+    public function shouldReturn_asArray_all()
     {
         // given
         $subject = "Foo:14-16 Bar Lorem:18 Ipsum";
@@ -490,7 +470,7 @@ class MatchPatternTest extends TestCase
     /**
      * @test
      */
-    public function shouldGetFirstMatch_asInt()
+    public function shouldReturn_asInt_first()
     {
         // given
         $subject = "I’ll have two number 9s, a number 9 large, a number 6 with extra dip, a number 7, two number 45s, one with cheese, and a large soda.";
@@ -505,7 +485,7 @@ class MatchPatternTest extends TestCase
     /**
      * @test
      */
-    public function shouldGroupBy_group()
+    public function shouldReturn_groupByName_texts()
     {
         // given
         $subject = '12cm 14mm 13cm 19cm 18mm 2mm';
@@ -524,7 +504,7 @@ class MatchPatternTest extends TestCase
     /**
      * @test
      */
-    public function shouldGroupBy_callback()
+    public function shouldDelegate_fluent_groupByCallback_all()
     {
         // given
         $subject = '12cm 14mm 13cm 19cm 18mm 2mm';
@@ -543,7 +523,7 @@ class MatchPatternTest extends TestCase
     /**
      * @test
      */
-    public function shouldGroupBy_callback_keys_all()
+    public function shouldDelegate_fluent_groupByCallback_keys_all()
     {
         // given
         $subject = '12cm 14mm 13cm 19cm 18mm 2mm';
@@ -558,7 +538,7 @@ class MatchPatternTest extends TestCase
     /**
      * @test
      */
-    public function shouldGroupBy_callback_keys_first()
+    public function shouldDelegate_fluent_groupByCallback_keys_first()
     {
         // given
         $subject = '12cm 14mm 13cm 19cm 18mm 2mm';

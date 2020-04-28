@@ -11,7 +11,7 @@ class MatchPatternTest extends TestCase
     /**
      * @test
      */
-    public function shouldGroupBy_texts()
+    public function shouldReturn_groupByName_texts()
     {
         // when
         $result = $this->groupBy()->texts();
@@ -26,7 +26,7 @@ class MatchPatternTest extends TestCase
     /**
      * @test
      */
-    public function shouldGroupBy_offsets()
+    public function shouldReturn_groupByName_offsets()
     {
         // when
         $result = $this->groupBy()->offsets();
@@ -41,7 +41,7 @@ class MatchPatternTest extends TestCase
     /**
      * @test
      */
-    public function shouldGroupBy_byteOffsets()
+    public function shouldReturn_groupByName_byteOffsets()
     {
         // when
         $result = $this->groupBy()->byteOffsets();
@@ -56,7 +56,7 @@ class MatchPatternTest extends TestCase
     /**
      * @test
      */
-    public function shouldGroupBy_map()
+    public function shouldReturn_groupByName_map()
     {
         // when
         $result = $this->groupBy()->map(function (Match $match) {
@@ -73,7 +73,7 @@ class MatchPatternTest extends TestCase
     /**
      * @test
      */
-    public function shouldGroupBy_flatMap()
+    public function shouldReturn_groupByName_flatMap()
     {
         // when
         $result = $this->groupBy()->flatMap(function (Match $match) {
@@ -90,7 +90,7 @@ class MatchPatternTest extends TestCase
     /**
      * @test
      */
-    public function shouldNotIncludeFilteredOut_texts()
+    public function shouldReturn_filter_groupByName_texts()
     {
         // given
         $groupByPattern = $this->filtered();
@@ -111,7 +111,7 @@ class MatchPatternTest extends TestCase
      * @param string $function
      * @param array $expected
      */
-    public function shouldNotIncludeFilteredOut(string $function, array $expected)
+    public function shouldReturn_filter_groupByName_mixed(string $function, array $expected)
     {
         // given
         $groupByPattern = $this->filtered();
@@ -130,7 +130,7 @@ class MatchPatternTest extends TestCase
      * @dataProvider mappersWithMatch
      * @param string $function
      */
-    public function shouldNotHaveLimit(string $function)
+    public function shouldReceive_filter_groupByName_mixed_detailsLimit(string $function)
     {
         // given
         $groupBy = $this->filtered();
@@ -156,7 +156,7 @@ class MatchPatternTest extends TestCase
      * @dataProvider mappersWithMatch
      * @param string $function
      */
-    public function shouldReturnOtherMatches_whenFiltered(string $function)
+    public function shouldReturn_filter_groupByName_mixed_detailsAll(string $function)
     {
         // given
         $groupByPattern = $this->filtered();
@@ -176,7 +176,7 @@ class MatchPatternTest extends TestCase
      * @dataProvider mappersWithMatch
      * @param string $function
      */
-    public function shouldPreserveUserData(string $function)
+    public function shouldPreserveUserData_filter_groupByName_mixed(string $function)
     {
         // given
         $groupByPattern = $this->filtered();
@@ -196,7 +196,7 @@ class MatchPatternTest extends TestCase
      * @dataProvider mappersWithMatch
      * @param string $function
      */
-    public function shouldIndexMatches(string $function)
+    public function shouldReceive_groupByName_mixed_detailsIndex(string $function)
     {
         // given
         $groupByPattern = $this->groupBy();
@@ -220,7 +220,7 @@ class MatchPatternTest extends TestCase
      * @dataProvider mappersWithMatch
      * @param string $function
      */
-    public function shouldIndexMatches_filtered(string $function)
+    public function shouldReceive_filter_groupByName_mixed_detailsIndex(string $function)
     {
         // given
         $groupByPattern = $this->filtered();
@@ -255,8 +255,7 @@ class MatchPatternTest extends TestCase
 
     private function groupBy(): GroupByPattern
     {
-        return $this->match()
-            ->groupBy('unit');
+        return $this->match()->groupBy('unit');
     }
 
     private function filtered(): GroupByPattern

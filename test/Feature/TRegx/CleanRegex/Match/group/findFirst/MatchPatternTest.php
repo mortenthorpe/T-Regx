@@ -15,7 +15,7 @@ class MatchPatternTest extends TestCase
     /**
      * @test
      */
-    public function shouldReturnMappedValue()
+    public function shouldDelegate_group0_findFirstOrThrow()
     {
         // when
         $result = pattern('Computer')
@@ -31,7 +31,7 @@ class MatchPatternTest extends TestCase
     /**
      * @test
      */
-    public function shouldCall_withDetails()
+    public function shouldReceive_group_findFirstOrThrow_detailsText()
     {
         // when
         pattern('[A-Z](?<lowercase>[a-z]+)?')
@@ -46,7 +46,7 @@ class MatchPatternTest extends TestCase
     /**
      * @test
      */
-    public function shouldCall_withDetails_all()
+    public function shouldReceive_group_findFirstOrThrow_detailsAll()
     {
         // when
         pattern('[A-Z](?<lowercase>[a-z]+)?')
@@ -61,7 +61,7 @@ class MatchPatternTest extends TestCase
     /**
      * @test
      */
-    public function shouldGet_forEmptyMatch()
+    public function shouldReceive_group_findFirstOrThrow_detailsText_forEmptyGroup()
     {
         // when
         pattern('Foo (?<bar>[a-z]*)')
@@ -76,7 +76,7 @@ class MatchPatternTest extends TestCase
     /**
      * @test
      */
-    public function shouldThrow_unmatchedSubject()
+    public function shouldThrow_group0_findFirstOrThrow_onUnmatchedSubject()
     {
         // then
         $this->expectException(SubjectNotMatchedException::class);
@@ -93,7 +93,7 @@ class MatchPatternTest extends TestCase
     /**
      * @test
      */
-    public function shouldThrow_unmatchedGroup()
+    public function shouldThrow_group_findFirstOrThrow_forUnmatchedGroup()
     {
         // then
         $this->expectException(GroupNotMatchedException::class);
@@ -110,7 +110,7 @@ class MatchPatternTest extends TestCase
     /**
      * @test
      */
-    public function shouldThrow_unmatchedSubject_customException()
+    public function shouldThrow_group0_findFirstOrThrow_onUnmatchedSubject_customException()
     {
         // then
         $this->expectException(CustomSubjectException::class);
@@ -127,7 +127,7 @@ class MatchPatternTest extends TestCase
     /**
      * @test
      */
-    public function shouldThrow_unmatchedGroup_customException()
+    public function shouldThrow_group_findFirstOrThrow_forUnmatchedGroup_customException()
     {
         // then
         $this->expectException(CustomSubjectException::class);
@@ -144,7 +144,7 @@ class MatchPatternTest extends TestCase
     /**
      * @test
      */
-    public function shouldPass_NotMatched_unmatchedSubject()
+    public function shouldPass_group0_findFirstOrElse_NotMatched_onUnmatchedSubject()
     {
         // when
         pattern('Foo(?<one>)(?<two>)')
@@ -159,7 +159,7 @@ class MatchPatternTest extends TestCase
     /**
      * @test
      */
-    public function shouldPass_NotMatched_unmatchedGroup()
+    public function shouldPass_group1_findFirstOrElse_NotMatched_forUnmatchedGroup()
     {
         // when
         pattern('Foo(?<one>Bar)?')
@@ -174,7 +174,7 @@ class MatchPatternTest extends TestCase
     /**
      * @test
      */
-    public function shouldThrow_nonexistent()
+    public function shouldThrow_group_findFirstOrReturn_forNonexistentGroup()
     {
         // given
         $subject = 'L Three Four';

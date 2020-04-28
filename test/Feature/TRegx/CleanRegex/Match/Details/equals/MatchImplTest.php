@@ -9,7 +9,7 @@ class MatchImplTest extends TestCase
     /**
      * @test
      */
-    public function shouldEqual_findFirst()
+    public function shouldReceive_findFirst_detailsGroupEquals()
     {
         // given
         pattern('Foo(Bar)')->match('FooBar')->findFirst(function (Match $match) {
@@ -20,7 +20,7 @@ class MatchImplTest extends TestCase
     /**
      * @test
      */
-    public function shouldNotEqual_findFirst_forUnequal()
+    public function shouldReceive_findFirst_detailsGroupEquals_forUnequal()
     {
         // given
         pattern('Foo(Bar)')->match('FooBar')->findFirst(function (Match $match) {
@@ -31,7 +31,7 @@ class MatchImplTest extends TestCase
     /**
      * @test
      */
-    public function shouldNotEqual_findFirst_forUnmatchedGroup()
+    public function shouldReceive_findFirst_detailsGroupEquals_forUnmatchedGroup()
     {
         // given
         pattern('Foo(Bar)?')->match('Foo')->findFirst(function (Match $match) {

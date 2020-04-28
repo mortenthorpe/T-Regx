@@ -9,13 +9,12 @@ class MatchImplTest extends TestCase
     /**
      * @test
      */
-    public function shouldGetOffset_first()
+    public function shouldReceive_first_detailsGroupOffset()
     {
         // when
         pattern('(?<capital>[A-Z])(?<lowercase>[a-z]{3,})')
             ->match('Cześć, Tomek')
             ->first(function (Match $match) {
-
                 // when
                 $offset = $match->group('lowercase')->offset();
                 $byteOffset = $match->group('lowercase')->byteOffset();
@@ -29,7 +28,7 @@ class MatchImplTest extends TestCase
     /**
      * @test
      */
-    public function shouldGetOffset_forEach()
+    public function shouldReceive_forEach_detailsOffset_batch()
     {
         // when
         pattern('(?<capital>[A-Z])(?<lowercase>[a-z]{3,})')

@@ -9,7 +9,7 @@ class AbstractMatchPatternTest extends TestCase
     /**
      * @test
      */
-    public function shouldFluentAll_keepIndexes()
+    public function shouldDelegate_fluent_map_all_keepIndexes()
     {
         // given
         $indexes = pattern("\w+")
@@ -27,7 +27,7 @@ class AbstractMatchPatternTest extends TestCase
     /**
      * @test
      */
-    public function shouldFluentAll_keepLimits()
+    public function shouldReceive_fluent_map_all_detailsLimit()
     {
         // given
         pattern("\w+")->match("Foo, Bar")->fluent()
@@ -41,7 +41,7 @@ class AbstractMatchPatternTest extends TestCase
     /**
      * @test
      */
-    public function shouldFluentAll_preserveUserData()
+    public function shouldPreserveUserData_filter_fluent_forEach()
     {
         // given
         pattern("\w+")
@@ -62,7 +62,7 @@ class AbstractMatchPatternTest extends TestCase
     /**
      * @test
      */
-    public function shouldFluentAll_getAll()
+    public function shouldDelegate_fluent_map_all_detailsAll()
     {
         // given
         $indexes = pattern("\w+")
@@ -81,7 +81,7 @@ class AbstractMatchPatternTest extends TestCase
     /**
      * @test
      */
-    public function shouldFluentFirst_keepIndex()
+    public function shouldDelegate_fluent_first_keepIndexes()
     {
         // given
         pattern("\w+")->match("Foo, Bar")->fluent()->first(function (Match $match) {
@@ -93,7 +93,7 @@ class AbstractMatchPatternTest extends TestCase
     /**
      * @test
      */
-    public function shouldFluentFirst_keepLimit()
+    public function shouldDelegate_fluent_first_detailsLimit()
     {
         // given
         pattern("\w+")->match("Foo, Bar")->fluent()->first(function (Match $match) {
@@ -104,7 +104,7 @@ class AbstractMatchPatternTest extends TestCase
     /**
      * @test
      */
-    public function shouldFluentFirst_preserveUserData()
+    public function shouldPreserveUserData_filter_fluent_first()
     {
         // given
         pattern("\w+")
@@ -125,7 +125,7 @@ class AbstractMatchPatternTest extends TestCase
     /**
      * @test
      */
-    public function shouldFluentFirst_getAll()
+    public function shouldDelegate_fluent_first_detailsAll()
     {
         // given
         $indexes = pattern("\w+")
