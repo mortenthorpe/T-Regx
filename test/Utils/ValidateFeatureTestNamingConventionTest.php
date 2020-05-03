@@ -26,6 +26,25 @@ class ValidateFeatureTestNamingConventionTest extends TestCase
 
     /**
      * @test
+     * @dataProvider structure
+     */
+    public function shouldMethodNamesBeTransitive(array $methods): void
+    {
+        // given
+        foreach ($methods as $methodName) {
+            // given
+            $method = (new MethodName())->parse($methodName);
+
+            // when
+            $name = $method->stringify();
+
+            // then
+            $this->assertEquals($name, $methodName);
+        }
+    }
+
+    /**
+     * @test
      */
     public function shouldNotTestTheSameFeatureTwice()
     {
@@ -36,7 +55,7 @@ class ValidateFeatureTestNamingConventionTest extends TestCase
         $duplicates = $this->getDuplicates($structure);
 
         // then
-        $this->assertEmpty($duplicates);
+        $this->assertEquals([], $duplicates);
     }
 
     public function methods(): array
@@ -59,5 +78,17 @@ class ValidateFeatureTestNamingConventionTest extends TestCase
         return array_keys(array_filter(array_count_values(call_user_func_array('array_merge', $structure)), function (int $count) {
             return $count > 1;
         }));
+    }
+
+    private function parseMethods(array $methods): array
+    {
+        $result = [];
+        foreach ($methods as $files) {
+            foreach ($files as $methodName) {
+                // when
+                $result[] = (new MethodName())->parse($methodName);
+            }
+        }
+        return $result;
     }
 }

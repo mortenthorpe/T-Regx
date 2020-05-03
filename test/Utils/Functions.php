@@ -33,6 +33,13 @@ class Functions
         };
     }
 
+    public static function fromArray(int $key)
+    {
+        return function (array $array) use ($key) {
+            return $array[$key];
+        };
+    }
+
     public static function fail(string $message = null): callable
     {
         return function () use ($message) {

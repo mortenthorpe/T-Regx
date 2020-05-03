@@ -1,62 +1,157 @@
 <?php
 namespace Test\Utils\Verification;
 
+use InvalidArgumentException;
+use TRegx\CleanRegex\Match\Details\Match;
 use TRegx\CleanRegex\Pattern;
-use TRegx\CleanRegex\PatternInterface;
 
 class MethodName
 {
     public function isValid(string $methodName): bool
     {
+        try {
+            $this->parse($methodName);
+            return true;
+        } catch (InvalidArgumentException $exception) {
+            return false;
+        }
+    }
+
+    public function parse(string $methodName): Method
+    {
         if ($methodName == 'shouldBe_countable') {
-            return true;
+            return Method::withSpecifics('Be', [], ['countable']);
         }
-        if ($this->pattern()->test($methodName)) {
-            return true;
-        }
-        if ($this->groupPattern()->test($methodName)) {
-            return true;
-        }
-        return false;
+
+        $types = ['Return', 'Throw', 'Delegate', 'Receive', 'Pass', 'NotCall', 'Be', 'PreserveUserData'];
+        [$type, $suffix] = Pattern::prepare(['^should(?<type>', [$types], ')_(.*)$'])
+            ->match($methodName)
+            ->findFirst(function (Match $match) {
+                return [$match->get('type'), $match->get(2)];
+            })
+            ->orThrow(InvalidArgumentException::class);
+
+        return $this->methods($type, explode('_', $suffix));
     }
 
-    private function pattern(): PatternInterface
+    private function methods(string $type, array $tags): Method
     {
-        return Pattern::inject('^should@_((fluent_(filter_)?)|(filter_(fluent_)?))?@', [
-            $this->features(),
-            $this->firstLevelMethods(),
-        ]);
-    }
+        $methods = array_values(array_intersect($tags, $this->firstLevelMethods()));
+        $cases = array_values(array_intersect($tags, $this->matchCases()));
+        $details = array_values(array_intersect($tags, $this->detailsMethods()));
+        $specifics = array_values(array_intersect($tags, $this->methodSpecifics()));
 
-    private function groupPattern(): PatternInterface
-    {
-        return Pattern::inject('^should@_group[01]?_(fluent_)?@', [
-            $this->features(),
-            $this->groupLevelMethods(),
-        ]);
-    }
-
-    private function features(): array
-    {
-        return ['Return', 'Throw', 'Delegate', 'Receive', 'Pass', 'NotCall', 'Be', 'PreserveUserData'];
+        $unexpected = array_diff($tags, $this->firstLevelMethods(), $this->matchCases(), $this->detailsMethods(), $this->methodSpecifics());
+        if (empty($unexpected)) {
+            return new Method($type, $methods, $cases, $details, $specifics);
+        }
+        throw new InvalidArgumentException("Unexpected feature test name's tag(s): " . join(", ", $unexpected));
     }
 
     private function firstLevelMethods(): array
     {
         return [
-            'count', 'test',
-            'first', 'findFirst',
-            'forEach', 'map', 'flatMap',
-            'distinct', 'all', 'only1', 'only2',
+            'test',
+            'count',
+            'first',
+            'findFirst',
+            'findFirstOrElse',
+            'findFirstOrThrow',
+            'findFirstOrReturn',
+            'forEach',
+            'map',
+            'flatMap',
+            'distinct',
+            'all',
+            'only',
+            'only1',
+            'only2',
+            'nth',
             'groupByName',
-            'offsets', 'asInt', 'asArray',
+            'fluent',
+            'filter',
+            'group', 'group0', 'group1',
+            'byteOffsets', 'offsets', 'asInt', 'asArray',
             'groupByCallback',
+
+            # Chained
+            'texts',
+            'keys',
+
+            # Meta tests - to be fixed
             'trio',
+            'mixed',
+            'detailsTextOffsetAll',
         ];
     }
 
-    private function groupLevelMethods(): array
+    private function matchCases(): array
     {
-        return ['first', 'findFirst', 'findFirstOrThrow', 'all', 'map', 'flatMap', 'only', 'only1', 'filter', 'offsets'];
+        return [
+            'onUnmatchedSubject',
+            'forInvalidGroup',
+            'forNonexistentGroup',
+            'forUnmatchedGroup',
+            'forEmptyGroup',
+            'forInvalidInteger',
+            'forEmptyString',
+            'forStringUtf8',
+            'forPseudoIntegerBecausePhpSucks',
+        ];
+    }
+
+    private function detailsMethods(): array
+    {
+        return [
+            'detailsText',
+            'detailsLimit',
+            'detailsIndex',
+            'detailsOffset',
+            'detailsGet',
+            'detailsAll',
+            'detailsToInt',
+            'detailsIsInt',
+            'detailsHasGroup',
+            'detailsGroup',
+            'detailsGroupAll',
+            'detailsGroupText',
+            'detailsGroupIsInt',
+            'detailsGroupToInt',
+            'detailsGroupNames',
+            'detailsGroupOffset',
+            'detailsGroupEquals',
+            'detailsGroupMatched',
+            'detailsGroupReplace',
+            'detailsGroupTextLength',
+
+            'detailsGroupsNames',
+            'detailsGroupsTexts',
+            'detailsGroupsCount',
+            'detailsGroupsOffsets',
+            'detailsNamedGroupsTexts',
+            'detailsNamedGroupsOffsets',
+
+            # Details' details
+            'byIndex',
+
+            # NotMatched - fix inconsistencies
+            'NotMatched',
+            'notMatchedGroupsCount',
+
+            # Meta tests - to be fixed
+            'batch',
+        ];
+    }
+
+    private function methodSpecifics(): array
+    {
+        return [
+            'customException',
+            'returnArbitraryType',
+            'forUnequal',
+            'keepIndexes',
+            'filteredOut',
+            'detailsAsString',
+        ];
     }
 }

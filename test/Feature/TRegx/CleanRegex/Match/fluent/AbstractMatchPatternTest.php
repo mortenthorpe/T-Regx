@@ -119,7 +119,7 @@ class AbstractMatchPatternTest extends TestCase
     /**
      * @test
      */
-    public function shouldThrow_fluent_findFirstOrThrow_customException_onUnmatchedSubject()
+    public function shouldThrow_fluent_findFirstOrThrow_onUnmatchedSubject_customException()
     {
         try {
             // when
