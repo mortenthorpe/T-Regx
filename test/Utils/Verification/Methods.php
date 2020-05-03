@@ -33,11 +33,23 @@ class Methods
             if ($method->getDeclaringClass()->getName() != $reflection->getName()) {
                 continue;
             }
-            if ((string)$method->getReturnType() === 'array') {
+            if ($this->getReturnTypeName($method) === 'array') {
                 continue;
             }
             $methods[] = $method->getName();
         }
         return $methods;
+    }
+
+    private function getReturnTypeName(ReflectionMethod $method): ?string
+    {
+        $returnType = $method->getReturnType();
+        if (!$returnType) {
+            return null;
+        }
+        if (method_exists($returnType, 'getName')) {
+            return $returnType->getName();
+        }
+        return (string)$returnType;
     }
 }
