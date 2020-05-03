@@ -70,7 +70,7 @@ class MatchImplTest extends TestCase
     /**
      * @test
      */
-    public function shouldThrow_first_detailsGroup_forInvalidGroup()
+    public function shouldThrow_first_detailsGet_forInvalidGroup()
     {
         // then
         $this->expectException(InvalidArgumentException::class);
@@ -81,7 +81,7 @@ class MatchImplTest extends TestCase
             ->match('first and second')
             ->first(function (Match $match) {
                 // when
-                $match->group(true);
+                $match->get(true);
             });
     }
 }

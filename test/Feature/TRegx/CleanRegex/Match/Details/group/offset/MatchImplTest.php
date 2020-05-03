@@ -28,7 +28,7 @@ class MatchImplTest extends TestCase
     /**
      * @test
      */
-    public function shouldReceive_forEach_detailsOffset_batch()
+    public function shouldReceive_forEach_detailsGroupOffset_batch()
     {
         // when
         pattern('(?<capital>[A-Z])(?<lowercase>[a-z]{3,})')

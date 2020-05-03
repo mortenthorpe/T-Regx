@@ -269,7 +269,7 @@ class MatchPatternTest extends TestCase
     /**
      * @test
      */
-    public function shouldThrow_findFirst_forUnmatchedGroup()
+    public function shouldThrow_findFirst_detailsGroupText_byIndex_forUnmatchedGroup()
     {
         // then
         $this->expectException(GroupNotMatchedException::class);
@@ -480,25 +480,6 @@ class MatchPatternTest extends TestCase
 
         // then
         $this->assertSame(9, $integer);
-    }
-
-    /**
-     * @test
-     */
-    public function shouldReturn_groupByName_texts()
-    {
-        // given
-        $subject = '12cm 14mm 13cm 19cm 18mm 2mm';
-
-        // when
-        $result = pattern('\d+(?<unit>cm|mm)')->match($subject)->groupBy('unit')->texts();
-
-        // then
-        $expected = [
-            'cm' => ['12cm', '13cm', '19cm'],
-            'mm' => ['14mm', '18mm', '2mm']
-        ];
-        $this->assertEquals($expected, $result);
     }
 
     /**

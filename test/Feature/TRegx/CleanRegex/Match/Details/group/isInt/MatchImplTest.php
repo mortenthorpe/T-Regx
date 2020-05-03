@@ -10,7 +10,7 @@ class MatchImplTest extends TestCase
     /**
      * @test
      */
-    public function shouldDelegate_first_detailsGroupIsInt()
+    public function shouldDelegate_first_detailsGroupIsInt_byIndex()
     {
         // given
         $result = pattern('(?<name>-?\w+)')
@@ -27,7 +27,7 @@ class MatchImplTest extends TestCase
     /**
      * @test
      */
-    public function shouldDelegate_first_detailsGroupIsInt_forPseudoIntegerBecausePhpSucks()
+    public function shouldDelegate_first_detailsGroupIsInt_byIndex_forPseudoIntegerBecausePhpSucks()
     {
         // given
         $result = pattern('(.*)', 's')
@@ -44,7 +44,7 @@ class MatchImplTest extends TestCase
     /**
      * @test
      */
-    public function shouldReceive_forEach_detailsGroupByNameIsInt()
+    public function shouldReceive_forEach_detailsGroupIsInt()
     {
         // given
         pattern('(?<value>\d+)')
@@ -61,7 +61,7 @@ class MatchImplTest extends TestCase
     /**
      * @test
      */
-    public function shouldReceive_map_detailsGroupIsInt()
+    public function shouldReceive_map_detailsGroupIsInt_byIndex()
     {
         // given
         pattern('(?<value>\d+)')
@@ -78,7 +78,7 @@ class MatchImplTest extends TestCase
     /**
      * @test
      */
-    public function shouldReceive_first_detailsGroupByNameIsInt_notInt()
+    public function shouldReceive_first_detailsGroupIsInt_forInvalidInteger()
     {
         // given
         pattern('(?<name>\w+)')
@@ -95,7 +95,7 @@ class MatchImplTest extends TestCase
     /**
      * @test
      */
-    public function shouldDelegate_first_detailsGroupIsInt_notInt()
+    public function shouldDelegate_first_detailsGroupIsInt_byIndex_forInvalidInteger()
     {
         // given
         pattern('(?<name>\w+)')
@@ -112,7 +112,7 @@ class MatchImplTest extends TestCase
     /**
      * @test
      */
-    public function shouldThrow_first_detailsGroupByNameIsInt_forUnmatchedGroup()
+    public function shouldThrow_first_detailsGroupIsInt_forUnmatchedGroup()
     {
         // then
         $this->expectException(GroupNotMatchedException::class);

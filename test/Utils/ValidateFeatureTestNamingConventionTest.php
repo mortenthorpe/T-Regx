@@ -12,7 +12,7 @@ class ValidateFeatureTestNamingConventionTest extends TestCase
      * @test
      * @dataProvider structure
      */
-    public function test(array $methods): void
+    public function shouldMethodNamesConformToNamingConvention(array $methods): void
     {
         // given
         foreach ($methods as $method) {
@@ -24,11 +24,40 @@ class ValidateFeatureTestNamingConventionTest extends TestCase
         }
     }
 
-    public function structure(): array
+    /**
+     * @test
+     */
+    public function shouldNotTestTheSameFeatureTwice()
+    {
+        // given
+        $structure = $this->methods();
+
+        // when
+        $duplicates = $this->getDuplicates($structure);
+
+        // then
+        $this->assertEmpty($duplicates);
+    }
+
+    public function methods(): array
     {
         return (new Methods())->groupMethodsByClass(
             MatchPatternTest::class,
             'Test\Feature\TRegx\CleanRegex\\'
         );
+    }
+
+    public function structure(): array
+    {
+        return array_map(function (array $methods) {
+            return [$methods];
+        }, $this->methods());
+    }
+
+    private function getDuplicates(array $structure): array
+    {
+        return array_keys(array_filter(array_count_values(call_user_func_array('array_merge', $structure)), function (int $count) {
+            return $count > 1;
+        }));
     }
 }

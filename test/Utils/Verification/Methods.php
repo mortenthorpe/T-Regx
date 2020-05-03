@@ -13,7 +13,7 @@ class Methods
             if (!Strings::startsWith($dataSet, 'Match\_stream_first\\')) {
                 // _stream_first aren't really feature tests. I mean they are, but not testing logic
                 // they test the preg_match()/preg_match_all() need for `first()`. So it shouldn't be included here.
-                $result[$dataSet] = [$this->methods($class)];
+                $result[$dataSet] = $this->methods($class);
             }
         }
         return $result;

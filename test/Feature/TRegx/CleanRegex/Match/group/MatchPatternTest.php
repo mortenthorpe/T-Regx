@@ -82,19 +82,6 @@ class MatchPatternTest extends TestCase
     /**
      * @test
      */
-    public function shouldThrow_group_first_forNonexistentGroup()
-    {
-        // then
-        $this->expectException(NonexistentGroupException::class);
-        $this->expectExceptionMessage("Nonexistent group: 'missing'");
-
-        // when
-        pattern('[A-Z](?<lowercase>[a-z]+)?')->match('L Three Four')->group('missing')->first();
-    }
-
-    /**
-     * @test
-     */
     public function shouldThrow_group_findFirst_forNonexistentGroup()
     {
         // then
@@ -130,26 +117,6 @@ class MatchPatternTest extends TestCase
         // then
         $this->assertEquals([null], $groups1);
         $this->assertEquals([null, 'omputer'], $groups2);
-    }
-
-    /**
-     * @test
-     */
-    public function shouldDelegate_group_map_detailsText()
-    {
-        // when
-        $groups = pattern('[A-Z](?<lowercase>[a-z]+)?')
-            ->match('D Computer')
-            ->group('lowercase')
-            ->map(function (MatchGroup $group) {
-                if ($group->matched()) {
-                    return $group->text();
-                }
-                return "unmatched";
-            });
-
-        // then
-        $this->assertEquals(['unmatched', 'omputer'], $groups);
     }
 
     /**

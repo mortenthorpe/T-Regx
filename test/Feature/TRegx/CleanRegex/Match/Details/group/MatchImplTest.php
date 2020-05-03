@@ -31,7 +31,7 @@ class MatchImplTest extends TestCase
     /**
      * @test
      */
-    public function shouldReceive_first_detailsGroupTextLength()
+    public function shouldReceive_first_detailsGroupTextLength_byIndex()
     {
         // given
         pattern('(\p{L}+)', 'u')
@@ -65,7 +65,7 @@ class MatchImplTest extends TestCase
     /**
      * @test
      */
-    public function shouldReceive_first_detailsGroupAll_forOneUnmatchedGroup()
+    public function shouldReceive_first_detailsGroupAll_forUnmatchedGroup()
     {
         // given
         pattern('Hello (?<one>there|here)?')
@@ -129,7 +129,7 @@ class MatchImplTest extends TestCase
     /**
      * @test
      */
-    public function shouldThrow_first_detailsGroupByName_onMissingGroup()
+    public function shouldThrow_first_detailsGroup_forNonexistentGroup()
     {
         // then
         $this->expectException(NonexistentGroupException::class);

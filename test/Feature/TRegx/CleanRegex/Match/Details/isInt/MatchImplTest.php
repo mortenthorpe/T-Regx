@@ -2,7 +2,6 @@
 namespace Test\Feature\TRegx\CleanRegex\Match\Details\isInt;
 
 use PHPUnit\Framework\TestCase;
-use TRegx\CleanRegex\Exception\GroupNotMatchedException;
 use TRegx\CleanRegex\Match\Details\Match;
 
 class MatchImplTest extends TestCase
@@ -10,52 +9,51 @@ class MatchImplTest extends TestCase
     /**
      * @test
      */
-    public function shouldReceive_first_detailsGroupByNameIsInt_forInvalidInteger()
+    public function shouldReceive_first_detailsIsInt()
     {
         // given
-        pattern('(?<name>\w+)')
-            ->match('Foo bar')
+        $result = pattern('\w+')
+            ->match('11')
             ->first(function (Match $match) {
                 // when
-                $result = $match->group('name')->isInt();
-
-                // then
-                $this->assertFalse($result);
+                return $match->isInt();
             });
-    }
 
-    /**
-     * @test
-     */
-    public function shouldReceive_first_detailsGroupIsInt_forInvalidInteger()
-    {
-        // given
-        pattern('(?<name>\w+)')
-            ->match('Foo bar')
-            ->first(function (Match $match) {
-                // when
-                $result = $match->group(1)->isInt();
-
-                // then
-                $this->assertFalse($result);
-            });
-    }
-
-    /**
-     * @test
-     */
-    public function shouldThrow_first_detailsGroupIsInt_forUnmatchedGroup()
-    {
         // then
-        $this->expectException(GroupNotMatchedException::class);
-        $this->expectExceptionMessage("Expected to call isInt() for group 'missing', but the group was not matched");
+        $this->assertTrue($result);
+    }
 
+    /**
+     * @test
+     */
+    public function shouldReceive_first_detailsIsInt_forInvalidInteger()
+    {
         // given
-        pattern('(?<name>\w+)(?<missing>\d+)?')
+        pattern('(?<name>\w+)')
             ->match('Foo bar')
             ->first(function (Match $match) {
                 // when
-                return $match->group('missing')->isInt();
+                $result = $match->isInt();
+
+                // then
+                $this->assertFalse($result);
             });
+    }
+
+    /**
+     * @test
+     */
+    public function shouldReceive_first_detailsIsInt_forPseudoIntegerBecausePhpSucks()
+    {
+        // given
+        $result = pattern('(.*)', 's')
+            ->match('1e3')
+            ->first(function (Match $match) {
+                // when
+                return $match->isInt();
+            });
+
+        // then
+        $this->assertFalse($result);
     }
 }

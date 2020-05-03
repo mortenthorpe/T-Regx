@@ -14,7 +14,7 @@ class MatchImplTest extends TestCase
      * @param string $string
      * @param int $expected
      */
-    public function shouldDelegate_first_detailsGroupToInt(string $string, int $expected)
+    public function shouldDelegate_first_detailsGroupToInt_byIndex(string $string, int $expected)
     {
         // given
         $result = pattern('(?<name>-?\w+)')
@@ -43,7 +43,7 @@ class MatchImplTest extends TestCase
     /**
      * @test
      */
-    public function shouldThrow_first_detailsGroupToInt_forPseudoIntegerBecausePhpSucks()
+    public function shouldThrow_first_detailsGroupToInt_byIndex_forPseudoIntegerBecausePhpSucks()
     {
         // then
         $this->expectException(IntegerFormatException::class);
@@ -61,7 +61,7 @@ class MatchImplTest extends TestCase
     /**
      * @test
      */
-    public function shouldDelegate_map_detailsGroupByNameToInt()
+    public function shouldDelegate_map_detailsGroupToInt()
     {
         // given
         $result = pattern('(?<value>\d+)')
@@ -78,7 +78,7 @@ class MatchImplTest extends TestCase
     /**
      * @test
      */
-    public function shouldDelegate_map_detailsGroupToInt()
+    public function shouldDelegate_map_detailsGroupToInt_byIndex()
     {
         // given
         $result = pattern('(?<value>\d+)')
@@ -95,7 +95,7 @@ class MatchImplTest extends TestCase
     /**
      * @test
      */
-    public function shouldThrow_first_detailsGroupByNameToInt_forInvalidInteger()
+    public function shouldThrow_first_detailsGroupToInt_forInvalidInteger()
     {
         // then
         $this->expectException(IntegerFormatException::class);
@@ -113,7 +113,7 @@ class MatchImplTest extends TestCase
     /**
      * @test
      */
-    public function shouldThrow_first_detailsGroupToInt_notInt()
+    public function shouldThrow_first_detailsGroupToInt_byIndex_forInvalidInteger()
     {
         // then
         $this->expectException(IntegerFormatException::class);
@@ -131,7 +131,7 @@ class MatchImplTest extends TestCase
     /**
      * @test
      */
-    public function shouldThrow_first_detailsGroupByNameToInt_forUnmatchedGroup()
+    public function shouldThrow_first_detailsGroupToInt_forUnmatchedGroup()
     {
         // then
         $this->expectException(GroupNotMatchedException::class);
