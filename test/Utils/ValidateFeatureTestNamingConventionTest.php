@@ -2,15 +2,14 @@
 namespace Test\Utils;
 
 use PHPUnit\Framework\TestCase;
-use Test\Feature\TRegx\CleanRegex\Match\MatchPatternTest;
+use Test\Utils\Verification\FeatureTests;
 use Test\Utils\Verification\MethodName;
-use Test\Utils\Verification\Methods;
 
 class ValidateFeatureTestNamingConventionTest extends TestCase
 {
     /**
      * @test
-     * @dataProvider structure
+     * @dataProvider \Test\Utils\Verification\FeatureTests::structure()
      */
     public function shouldMethodNamesConformToNamingConvention(array $methods): void
     {
@@ -26,7 +25,7 @@ class ValidateFeatureTestNamingConventionTest extends TestCase
 
     /**
      * @test
-     * @dataProvider structure
+     * @dataProvider \Test\Utils\Verification\FeatureTests::structure()
      */
     public function shouldMethodNamesBeTransitive(array $methods): void
     {
@@ -49,46 +48,12 @@ class ValidateFeatureTestNamingConventionTest extends TestCase
     public function shouldNotTestTheSameFeatureTwice()
     {
         // given
-        $structure = $this->methods();
+        $structure = FeatureTests::methodNames();
 
         // when
-        $duplicates = $this->getDuplicates($structure);
+        $duplicates = Arrays::getDuplicates($structure);
 
         // then
         $this->assertEquals([], $duplicates);
-    }
-
-    public function methods(): array
-    {
-        return (new Methods())->groupMethodsByClass(
-            MatchPatternTest::class,
-            'Test\Feature\TRegx\CleanRegex\\'
-        );
-    }
-
-    public function structure(): array
-    {
-        return array_map(function (array $methods) {
-            return [$methods];
-        }, $this->methods());
-    }
-
-    private function getDuplicates(array $structure): array
-    {
-        return array_keys(array_filter(array_count_values(call_user_func_array('array_merge', $structure)), function (int $count) {
-            return $count > 1;
-        }));
-    }
-
-    private function parseMethods(array $methods): array
-    {
-        $result = [];
-        foreach ($methods as $files) {
-            foreach ($files as $methodName) {
-                // when
-                $result[] = (new MethodName())->parse($methodName);
-            }
-        }
-        return $result;
     }
 }

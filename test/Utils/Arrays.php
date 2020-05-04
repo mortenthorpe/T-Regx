@@ -11,4 +11,11 @@ class Arrays
         }
         return $newArray;
     }
+
+    public static function getDuplicates(array $structure): array
+    {
+        return array_keys(array_filter(array_count_values(call_user_func_array('array_merge', $structure)), function (int $count) {
+            return $count > 1;
+        }));
+    }
 }

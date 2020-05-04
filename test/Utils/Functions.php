@@ -46,4 +46,11 @@ class Functions
             Assert::fail($message ?? 'Failed to assert that callback is not invoked');
         };
     }
+
+    public static function wrapArray(): callable
+    {
+        return function ($element): array {
+            return [$element];
+        };
+    }
 }
