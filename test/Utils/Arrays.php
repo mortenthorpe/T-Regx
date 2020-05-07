@@ -3,6 +3,11 @@ namespace Test\Utils;
 
 class Arrays
 {
+    public static function map(array $elements, callable $function): array
+    {
+        return array_map($function, $elements);
+    }
+
     public static function mapKeys(callable $function, array $elements): array
     {
         $newArray = [];

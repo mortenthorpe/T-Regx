@@ -3,7 +3,9 @@ namespace Test\Utils;
 
 use PHPUnit\Framework\TestCase;
 use Test\Utils\Verification\FeatureTests;
+use Test\Utils\Verification\Method;
 use Test\Utils\Verification\MethodName;
+use Test\Utils\Verification\Requirements;
 
 class ValidateFeatureTestNamingConventionTest extends TestCase
 {
@@ -55,5 +57,26 @@ class ValidateFeatureTestNamingConventionTest extends TestCase
 
         // then
         $this->assertEquals([], $duplicates);
+    }
+
+    /**
+     * @test
+     * @dataProvider requiredMethods
+     */
+    public function shouldMeetAllRequirements(string $requiredMethod)
+    {
+        // given
+        $all = Arrays::map(FeatureTests::methodObjects(), fn(Method $method) => $method->stringify());
+
+        // when
+        $tested = in_array($requiredMethod, $all);
+
+        // then
+        $this->assertTrue($tested, "Failed to assert that method $requiredMethod() is tested");
+    }
+
+    public function requiredMethods(): array
+    {
+        return Arrays::map(Arrays::mapKeys(Functions::identity(), Requirements::requirements()), Functions::wrapArray());
     }
 }
