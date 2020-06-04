@@ -3,7 +3,6 @@ namespace Test\Feature\TRegx\CleanRegex\Match;
 
 use PHPUnit\Framework\TestCase;
 use Test\Utils\Functions;
-use Test\Utils\Verification\VerifyFeatureNames;
 use TRegx\CleanRegex\Exception\GroupNotMatchedException;
 use TRegx\CleanRegex\Exception\NoSuchElementFluentException;
 use TRegx\CleanRegex\Exception\SubjectNotMatchedException;
@@ -217,7 +216,7 @@ class MatchPatternTest extends TestCase
     /**
      * @test
      */
-    public function shouldNotCall_offsets_first_onUnmatchedSubject()
+    public function shouldThrow_offsets_first_onUnmatchedSubject()
     {
         // then
         $this->expectException(SubjectNotMatchedException::class);

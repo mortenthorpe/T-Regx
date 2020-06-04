@@ -5,6 +5,7 @@ use PHPUnit\Framework\TestCase;
 use Test\Utils\CustomSubjectException;
 use Test\Utils\Functions;
 use TRegx\CleanRegex\Exception\NoSuchElementFluentException;
+use TRegx\CleanRegex\Exception\SubjectNotMatchedException;
 use TRegx\CleanRegex\Match\Details\Group\MatchGroup;
 use TRegx\CleanRegex\Match\Details\Match;
 
@@ -132,6 +133,20 @@ class AbstractMatchPatternTest extends TestCase
             // then
             $this->assertEquals("Expected to get the first element from fluent pattern, but the elements feed is empty.", $exception->getMessage());
             $this->assertEquals("Bar", $exception->subject);
+        }
+    }
+
+    /**
+     * @test
+     */
+    public function shouldThrow_fluent_first_onUnmatchedSubject()
+    {
+        try {
+            // when
+            pattern("Foo")->match("Bar")->fluent()->first();
+        } catch (SubjectNotMatchedException $exception) {
+            // then
+            $this->assertEquals("Expected to get the first element from fluent pattern, but the elements feed is empty.", $exception->getMessage());
         }
     }
 }
