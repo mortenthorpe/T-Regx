@@ -11,7 +11,7 @@ class MatchPatternTest extends TestCase
     /**
      * @test
      */
-    public function shouldReturnTuple()
+    public function shouldReturn_tuple()
     {
         // when
         [$value, $unit] = pattern('(\d+)(?<unit>cm|mm)')->match('12cm 14mm')->tuple(1, 'unit');
@@ -24,7 +24,7 @@ class MatchPatternTest extends TestCase
     /**
      * @test
      */
-    public function shouldReturnTriple()
+    public function shouldReturn_triple()
     {
         // when
         [$a, $b, $c] = pattern('([ab])([12])([$%])')->match('a1% b2$')->triple(1, 3, 2);
@@ -38,7 +38,7 @@ class MatchPatternTest extends TestCase
     /**
      * @test
      */
-    public function shouldTupleCoalesceToNull()
+    public function shouldReturn_tuple_forUnmatchedGroup()
     {
         // when
         [$o, $k] = pattern('(o)?(k)?')->match('')->tuple(1, 2);
@@ -51,7 +51,7 @@ class MatchPatternTest extends TestCase
     /**
      * @test
      */
-    public function shouldTripleCoalesceToNull()
+    public function shouldReturn_triple_forUnmatchedGroup()
     {
         // when
         [$a, $b, $c] = pattern('(a)?(b)?(c)?')->match('')->triple(1, 2, 3);
@@ -65,7 +65,7 @@ class MatchPatternTest extends TestCase
     /**
      * @test
      */
-    public function shouldReturnTuple_filter()
+    public function shouldReturn_tuple_filter()
     {
         // when
         [$value, $unit] = pattern('(\d+)(?<unit>cm|mm)')
@@ -83,7 +83,7 @@ class MatchPatternTest extends TestCase
     /**
      * @test
      */
-    public function shouldReturnTriple_filter()
+    public function shouldReturn_triple_filter()
     {
         // when
         [$a, $b, $c] = pattern('([ab])([12])([$%])')->match('a1% b2$')
@@ -130,7 +130,7 @@ class MatchPatternTest extends TestCase
      * @param int $group1
      * @param int $group2
      */
-    public function shouldThrow_tuple_onMissingGroup($group1, $group2)
+    public function shouldThrow_tuple_forNonexistentGroup($group1, $group2)
     {
         // then
         $this->expectException(NonexistentGroupException::class);
@@ -155,7 +155,7 @@ class MatchPatternTest extends TestCase
      * @param int $group2
      * @param int $group3
      */
-    public function shouldThrow_triple_onMissingGroup($group1, $group2, $group3)
+    public function shouldThrow_triple_forNonexistentGroup($group1, $group2, $group3)
     {
         // then
         $this->expectException(NonexistentGroupException::class);

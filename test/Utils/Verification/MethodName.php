@@ -3,6 +3,7 @@ namespace Test\Utils\Verification;
 
 use InvalidArgumentException;
 use TRegx\CleanRegex\Match\Details\Match;
+use TRegx\CleanRegex\Match\Details\NotMatched;
 use TRegx\CleanRegex\Pattern;
 
 class MethodName
@@ -29,7 +30,9 @@ class MethodName
             ->findFirst(function (Match $match) {
                 return [$match->get('type'), $match->get(2)];
             })
-            ->orThrow(InvalidArgumentException::class);
+            ->orElse(function (NotMatched $notMatched) {
+                throw new \InvalidArgumentException($notMatched->subject());
+            });
 
         return $this->methods($type, explode('_', $suffix));
     }
@@ -73,6 +76,8 @@ class MethodName
             'group', 'group0', 'group1',
             'byteOffsets', 'offsets', 'asInt', 'asArray',
             'groupByCallback',
+            'tuple',
+            'triple',
 
             # Chained
             'texts',

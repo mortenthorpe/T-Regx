@@ -9,7 +9,7 @@ class Requirements
     {
         return array_merge(
             self::throwFirst_onSubjectNotMatched(),
-            self::userData(),
+            self::userData()
         );
     }
 
@@ -24,7 +24,9 @@ class Requirements
             'group_',
         ];
 
-        return Arrays::map($calls, fn(string $call): string => "shouldThrow_${call}first_onUnmatchedSubject");
+        return Arrays::map($calls, function (string $call) {
+            return "shouldThrow_${call}first_onUnmatchedSubject";
+        });
     }
 
     private static function userData(): array
