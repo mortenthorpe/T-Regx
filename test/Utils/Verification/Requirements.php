@@ -9,6 +9,16 @@ class Requirements
     {
         return array_merge(
             self::throwFirst_onSubjectNotMatched(),
+            [
+                'first,findFirst' => [
+                    'onNoSubject',
+                    'group, onNoSubject',
+                    'group, onNoGroup',
+                ],
+
+                'receive' => ['first', 'map', 'flatMap', 'filter', 'forEach', 'findFirst']
+            ],
+
             self::userData()
         );
     }
@@ -22,6 +32,9 @@ class Requirements
             'offsets_',
             'fluent_',
             'group_',
+            'fluent_',
+            'fluent_map_',
+            'fluent_filter_',
         ];
 
         return Arrays::map($calls, function (string $call) {
@@ -36,7 +49,7 @@ class Requirements
             "shouldPreserveUserData_filter_first",
             "shouldPreserveUserData_filter_map",
             "shouldPreserveUserData_filter_findFirst",
-            "shouldPreserveUserData_filter_groupByName_mixed",
+            "shouldPreserveUserData_filter_group_byName_mixed",
 
             // Triple userData pass, with fluent()
             "shouldPreserveUserData_filter_fluent_first",

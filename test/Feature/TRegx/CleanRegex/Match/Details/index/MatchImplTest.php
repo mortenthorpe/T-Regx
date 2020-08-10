@@ -37,8 +37,7 @@ class MatchImplTest extends TestCase
 
                 // then
                 $this->assertEquals(0, $index);
-            })
-            ->orThrow();
+            });
     }
 
     /**

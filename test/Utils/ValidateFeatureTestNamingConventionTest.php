@@ -5,7 +5,6 @@ use PHPUnit\Framework\TestCase;
 use Test\Utils\Verification\FeatureTests;
 use Test\Utils\Verification\Method;
 use Test\Utils\Verification\MethodName;
-use Test\Utils\Verification\Requirements;
 
 class ValidateFeatureTestNamingConventionTest extends TestCase
 {
@@ -61,22 +60,39 @@ class ValidateFeatureTestNamingConventionTest extends TestCase
 
     /**
      * @test
-     * @dataProvider requiredMethods
      */
-    public function shouldMeetAllRequirements(string $requiredMethod)
+    public function shouldMeetAllRequirements()
     {
         // given
-        $all = Arrays::map(FeatureTests::methodObjects(), fn(Method $method) => $method->stringify());
+        $all = FeatureTests::methodObjects();
 
-        // when
-        $tested = in_array($requiredMethod, $all);
+        $all = array_map(fn(Method $method) => $method->markup(), $all);
+        sort($all);
+
+        $all2 = array_keys(array_flip($all));
 
         // then
-        $this->assertTrue($tested, "Failed to assert that method $requiredMethod() is tested");
+        $a = 4;
     }
 
-    public function requiredMethods(): array
+    public function groupBy($array, callable $callback, callable $callback2): array
     {
-        return Arrays::map(Arrays::mapKeys(Functions::identity(), Requirements::requirements()), Functions::wrapArray());
+        $result = [];
+        foreach ($array as $element) {
+            $var = $callback2($element);
+            if ($var === null) {
+                $result[$callback($element)][] = $element;
+            } else {
+                $result[$callback($element)][$var][] = $element;
+            }
+        }
+        return $result;
+    }
+
+    public function presentArray($array): array
+    {
+        $array = array_map('json_encode', $array);
+        sort($array);
+        return $array;
     }
 }

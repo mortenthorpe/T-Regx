@@ -41,7 +41,7 @@ class MatchPatternTest extends TestCase
     /**
      * @test
      */
-    public function shouldReturn_group_only1_onUnmatchedSubject()
+    public function shouldReturn_group_only_onUnmatchedSubject()
     {
         // given
         $subject = 'NOT MATCHING';
@@ -95,7 +95,7 @@ class MatchPatternTest extends TestCase
     /**
      * @test
      */
-    public function shouldThrow_group_only1_forNonexistentGroup()
+    public function shouldThrow_group_only_forNonexistentGroup()
     {
         // then
         $this->expectException(NonexistentGroupException::class);
@@ -202,7 +202,7 @@ class MatchPatternTest extends TestCase
     /**
      * @test
      */
-    public function shouldReturn_group_offsets_only1()
+    public function shouldReturn_group_offsets_only()
     {
         // given
         $offsets = pattern('[A-Z](?<lowercase>[a-z]+)?')

@@ -47,20 +47,20 @@ class MethodNameTest extends TestCase
             ['shouldDelegate_fluent_filter_asInt', Method::create('Delegate', ['fluent', 'filter', 'asInt'])],
             ['shouldDelegate_group_filter_asInt', Method::create('Delegate', ['group', 'filter', 'asInt'])],
             [
-                'shouldThrow_group0_findFirstOrThrow_onUnmatchedSubject_customException',
-                Method::withCasesSpecifics('Throw', ['group0', 'findFirstOrThrow'], ['onUnmatchedSubject'], ['customException'])
+                'shouldThrow_group_findFirst_orThrow_onUnmatchedSubject_customException',
+                Method::withCasesSpecifics('Throw', ['group', 'findFirst','orThrow'], ['onUnmatchedSubject'], ['customException'])
             ],
             [
-                'shouldReceive_group_findFirstOrThrow_detailsText_forEmptyGroup',
-                Method::detailed('Receive', ['group', 'findFirstOrThrow'], ['forEmptyGroup'], ['detailsText'])
+                'shouldReceive_group_findFirst_orThrow_detailsText_forEmptyGroup',
+                Method::detailed('Receive', ['group', 'findFirst','orThrow'], ['forEmptyGroup'], ['detailsText'])
             ],
             [
-                'shouldReceive_group_findFirstOrThrow_detailsText',
-                Method::withDetails('Receive', ['group', 'findFirstOrThrow'], ['detailsText'])
+                'shouldReceive_group_findFirst_orThrow_detailsText',
+                Method::withDetails('Receive', ['group', 'findFirst','orThrow'], ['detailsText'])
             ],
             [
-                'shouldThrow_group_findFirstOrReturn_forNonexistentGroup',
-                Method::create('Throw', ['group', 'findFirstOrReturn'], ['forNonexistentGroup'])
+                'shouldThrow_group_findFirst_orThrow_forNonexistentGroup',
+                Method::create('Throw', ['group', 'findFirst','orReturn'], ['forNonexistentGroup'])
             ],
             [
                 'shouldPass_first_returnArbitraryType',

@@ -96,14 +96,13 @@ class AbstractMatchPatternTest extends TestCase
             })
             ->findFirst(function (Match $match) {
                 $this->assertTrue(true);
-            })
-            ->orThrow();
+            });
     }
 
     /**
      * @test
      */
-    public function shouldThrow_fluent_findFirstOrThrow_onUnmatchedSubject()
+    public function shouldThrow_fluent_findFirst_orThrow_onUnmatchedSubject()
     {
         // then
         $this->expectException(NoSuchElementFluentException::class);
@@ -120,7 +119,7 @@ class AbstractMatchPatternTest extends TestCase
     /**
      * @test
      */
-    public function shouldThrow_fluent_findFirstOrThrow_onUnmatchedSubject_customException()
+    public function shouldThrow_fluent_findFirst_orThrow_onUnmatchedSubject_customException()
     {
         try {
             // when

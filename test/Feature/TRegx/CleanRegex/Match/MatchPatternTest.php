@@ -27,7 +27,7 @@ class MatchPatternTest extends TestCase
     /**
      * @test
      */
-    public function shouldReturn_only2()
+    public function shouldReturn_only()
     {
         // when
         $matches = pattern('Foo (B(ar))')->match('Foo Bar, Foo Bar, Foo Bar')->only(2);
@@ -51,7 +51,7 @@ class MatchPatternTest extends TestCase
     /**
      * @test
      */
-    public function shouldPass_first()
+    public function shouldReceive_first_detailsText()
     {
         // when
         $value = pattern('[A-Za-z]{4}\.')->match('What do you need? - Guns.')->first(function (Match $match) {
@@ -65,7 +65,7 @@ class MatchPatternTest extends TestCase
     /**
      * @test
      */
-    public function shouldPass_first_returnArbitraryType()
+    public function shouldReturn_first_returnArbitraryType()
     {
         // when
         $value = pattern('[A-Z]+')->match('F')->first(Functions::constant(new \stdClass()));
@@ -91,7 +91,7 @@ class MatchPatternTest extends TestCase
     /**
      * @test
      */
-    public function shouldPass_findFirst()
+    public function shouldReturn_findFirst()
     {
         // when
         $value = pattern('[A-Z]+')
@@ -106,26 +106,22 @@ class MatchPatternTest extends TestCase
     /**
      * @test
      */
-    public function shouldPass_findFirstOrElse_notMatchedGroupsCount()
+    public function shouldPass_findFirst_orElse_notMatchedGroupsCount()
     {
         // when
-        $value = pattern('[a-z]+')
+        pattern('[a-z]+')
             ->match('NOT MATCHING')
             ->findFirst(Functions::fail())
             ->orElse(function (NotMatched $notMatched) {
                 // then
                 $this->assertEquals(0, $notMatched->groupsCount());
-                return 'Different';
             });
-
-        // then
-        $this->assertEquals('Different', $value);
     }
 
     /**
      * @test
      */
-    public function shouldPass_map()
+    public function shouldReturn_map()
     {
         // when
         $mapped = pattern('[A-Za-z]+')->match('Foo, Bar, Top')->map(function (Match $match) {
@@ -156,7 +152,7 @@ class MatchPatternTest extends TestCase
     /**
      * @test
      */
-    public function shouldPass_flatMap()
+    public function shouldReturn_flatMap()
     {
         // when
         $mapped = pattern('[A-Za-z]+')->match('Foo, Bar, Top')->flatMap(function (Match $match) {
@@ -255,7 +251,7 @@ class MatchPatternTest extends TestCase
     /**
      * @test
      */
-    public function shouldThrow_asInt_findFirst_onUnmatchedSubject()
+    public function shouldThrow_asInt_findFirst_orThrow_onUnmatchedSubject()
     {
         // then
         $this->expectException(NoSuchElementFluentException::class);
@@ -311,7 +307,7 @@ class MatchPatternTest extends TestCase
     /**
      * @test
      */
-    public function shouldDelegate_filter_only2()
+    public function shouldDelegate_filter_only()
     {
         // when
         $filtered = pattern('[A-Z][a-z]+')->match('First, Second, Third, Fourth, Fifth')
@@ -327,23 +323,7 @@ class MatchPatternTest extends TestCase
     /**
      * @test
      */
-    public function shouldDelegate_filter_only1()
-    {
-        // when
-        $filtered = pattern('[A-Z][a-z]+')->match('First, Second, Third, Fourth, Fifth')
-            ->filter(function (Match $match) {
-                return strlen($match) === 5;
-            })
-            ->only(1);
-
-        // then
-        $this->assertEquals(['First'], $filtered);
-    }
-
-    /**
-     * @test
-     */
-    public function shouldDelegate_filter_only1_filteredOut()
+    public function shouldDelegate_filter_only_filteredOut()
     {
         // when
         $filtered = pattern('[A-Z][a-z]+')->match('First, Second, Third, Fourth, Fifth')

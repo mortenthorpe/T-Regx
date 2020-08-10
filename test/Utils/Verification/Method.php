@@ -9,8 +9,8 @@ class Method implements JsonSerializable
     public $type;
     /** @var array */
     public $methods;
-    /** @var array */
-    public $cases;
+    /** @var string|null */
+    public $case;
     /** @var array */
     public $details;
     /** @var array */
@@ -20,7 +20,7 @@ class Method implements JsonSerializable
     {
         $this->type = $type;
         $this->methods = $methods;
-        $this->cases = $cases;
+        $this->case = $this->oneOrNull($cases);
         $this->details = $details;
         $this->specific = $specific;
     }
@@ -52,8 +52,17 @@ class Method implements JsonSerializable
 
     public function stringify(): string
     {
-        $tags = implode('_', array_filter(array_merge($this->methods, $this->details, $this->cases, $this->specific)));
+        $tags = implode('_', array_filter(array_merge($this->methods, [$this->case])));
         return "should{$this->type}_$tags";
+    }
+
+    public function markup(): string
+    {
+        $case = $this->case !== null ? " ($this->case)" : '';
+        $methods = implode('->', array_map(fn($n) => "$n()", $this->methods));
+        $d = $this->details ? json_encode($this->details) : '';
+        $s = $this->specific ? json_encode($this->specific) : '';
+        return trim(str_pad("$methods = {$this->type}$case", 130) . $d . $s);
     }
 
     public function jsonSerialize(): array
@@ -62,8 +71,25 @@ class Method implements JsonSerializable
             'methods'  => $this->methods,
             'details'  => $this->details,
             'specific' => $this->specific,
-            'cases'    => $this->cases,
+            'case'     => $this->case,
             'type'     => $this->type,
         ]);
     }
+
+    private function oneOrNull(array $cases)
+    {
+        if (count($cases) === 0) {
+            return null;
+        }
+        if (count($cases) === 1) {
+            return $cases[0];
+        }
+        throw new \InvalidArgumentException();
+    }
+
+    public function __toString()
+    {
+        return $this->stringify();
+    }
+
 }
