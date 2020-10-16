@@ -2,26 +2,193 @@
 
 Examples of delimited patterns with flags:
 <ul>
-  <li>`/^[a-z]+$/m` - matches: start of a line, one or more letters, end of line</li>
-  <li>`#https?://(www\.)?\.[a-z]+\.[a-z]+#i` - matches: `http` or `https`, `://`, optional `www.`, one or more letters, `"."`
-    character, one or more letters; all case-insensitive
+  <li>
+    `/^[a-z]+$/m` - matches: start of a line, one or more letters, end of line
+  </li>
+  <li>
+    `#https?://(www\.)?[a-z]+\.[a-z]+#i` - matches: `http` or `https`, `://`, optional `www.`, one or more letters,
+    `"."` character, one or more letters; all case-insensitive
   </li>
 </ul>
-
 Available flags:
 <ul>
   <li>
-    i (case insensitive) - If this modifier is set, letters in the pattern match both upper and lower case letters.
+    <p>`i` (lowercase) - `Case Insensitive`</p>
+    <p>
+      If this modifier is set, characters `[a-z]` and/or `[A-Z]` match both upper and lower case letters.
+    </p>
+    <p>Examples:</p>
+    <ul>
+      <li>`/[a-z]/i` is equal to `/[a-zA-Z]/` - range `a-z` matches both lower and uppercase letters</li>
+      <li>`/[A-Z]/i` is equal to `/[a-zA-Z]/` - range `A-Z` matches both lower and uppercase letters</li>
+    </ul>
+    <p>
+      Note! Case insensitivity only applies to `A-Z` characters. UTF8 characters aren't affected, at all.
+      For example, `/ä/i` will no match `"Ä"`.
+    </p>
   </li>
-  <li>m (multiline) - By default, PCRE treats the subject string as consisting of a single "line" of characters (even
-    if it actually contains several newline characters (e.g. `"\n"` or `"\r"`). The "start of line" metacharacter
-    (`^`) matches only at the start of the string, while the "end of line" metacharacter (`$`) matches only at the
-    end of the string. This is the same as Perl.
+  <li>
+    <p>`m` (lowercase) - `Multiline`</p>
+    <p>By default, PCRE treats metacharacters `^` and `$` as "the start of the `subject`" and "the end of the
+      `subject`".</p>
+    <p>
+      In other words, by default, PCRE treats the subject string as consisting of a single "line" of characters (even
+      if it actually contains several newline characters (e.g. `"\n"` or `"\r"`). The "start of line" metacharacter
+      (`^`) matches only at the start of the string, while the "end of line" metacharacter (`$`) matches only at the
+      end of the string.
+    </p>
 
-    <p>When this modifier is set, the "start of line" and "end of line" constructs match immediately following or
-      immediately before any newline in the subject string, respectively, as well as at the very start and end. </p>
-
-    <p>In other words, if you consider a multiline string, `^` and `$` will normally match the start and the end of the
-      whole string; but if `m` is used, `^` and `$` will match each line beginning and end.</p>
+    <p>
+      When this modifier is set, the metacharacters `^` and `$` mean "the start of a line" and "the end of a line";
+      that is:
+    </p>
+    <ul>
+      <li>`^` matches at the start of the `subject` string, or immediately after a newline character</li>
+      <li>`$` matches at the end of the `subject` string, or immediately before a newline character</li>
+    </ul>
+    <p>
+      In other words, if you consider a multiline string, when <b>m</b> is used,
+      <b>^</b> and <b>$</b> will match beginning and end of `each line`, instead of beginning and end of `subject`
+      string.
+    </p>
+  </li>
+  <li>
+    <p>`s` (lowercase) - `Single line`/`Dot-all`</p>
+    <p>
+      By default, PCRE treats dot metacharacter `.` doesn't match new line characters (equally with `[^\n]`).
+    </p>
+    <p>
+      When this modifier is set, dot metacharacter will indeed match newlines; hence "dot-all".
+    </p>
+    <p>Examples:</p>
+    <ul>
+      <li>`/a.b/` doesn't match `"a\nb"`</li>
+      <li>`/a.b/s` does match `"a\nb"`</li>
+      <li>`/a.b/` and `/a.b/s` do match `"a\rb"`</li>
+    </ul>
+  </li>
+  <li>
+    <p>`x` (lowercase) - `Extended`</p>
+    <p>The idea behind this flag is to make complex patterns split into multiple lines, with possible commentary.</p>
+    <p>That means, you can add whitespace/new lines in (almost) any place, and add comments to each line.</p>
+    <p>You can also add bash-style comment (starting with `#` till the end of the line).</p>
+    <p>Examples:</p>
+    <ul>
+      <li>`/a b/x` is equal to `/ab/` - whitespace at top level is `ignored`</li>
+      <li>`/( a | b ) c/x` is equal to `/(a|b)c/` - whitespace inside capturing groups is `ignored`</li>
+      <li>`/a\ b/x` is equal to `/a b/` - escaped whitespace is `respected`</li>
+      <li>`/a[ ]b/x` is equal to `/a b/` - whitespace in character group is `respected`</li>
+      <li>`/a(?= )/x` is equal to `/a(?=)/` - whitespace in look-aheads is `ignored`</li>
+    </ul>
+    <p>
+      Note! Within special character sequences in a pattern, for example within the conditional statement `(?(here)`,
+      there can be no whitespace, regardless of whether `x` was used or not.
+    </p>
+  </li>
+  <li>
+    <p>`e` (lowercase) - `Replace Eval`</p>
+    <p>Don't.</p>
+  </li>
+  <li>
+    <p>`A` (uppercase) - `Anchored`</p>
+    <p>If this modifier is set, the pattern is constrained to match only at the start of the `subject`.</p>
+    <p>Examples:</p>
+    <ul>
+      <li>`/foo/A` is equal to `/^foo/` - the effect of flag `A` can also be achieved by `^` metacharacter</li>
+    </ul>
+    <p>Notes:</p>
+    <ul>
+      <li>
+        There will only ever be one match (even when `preg_match_all()` is used, or `preg_replace()` without a limit),
+        because only one occurrence can appear at the beginning of the `subject`.
+      </li>
+      <li>
+        The offset of the match will always be `0`, since the pattern is forced to be matched at the beginning of the
+        `subject`.
+      </li>
+    </ul>
+  </li>
+  <li>
+    <p>`D` (uppercase) - `Dollar End-Only` (ignored, if `m` flag is used)</p>
+    <p>By default, dollar metacharacter (`$`) actually accepts a possible newline before the end of `subject`.</p>
+    <p>That is, by default, `$` is actually `\n?$`.</p>
+    <ul>
+      <li>`/foo$/` matches `"foo"` AND `"foo\n"`</li>
+      <li>`/foo$\n/` matches `"foo\n"` - For some reason, it works :|</li>
+      <li>`/foo$\n?/` matches `"foo"` AND `"foo\n"`</li>
+    </ul>
+    <p>
+      When this modifier is set, dollar metacharacter will not accept optional newline before the end of the
+      `subject`.
+      Hence, "Dollar will match end-only (not newline)".
+    </p>
+    <ul>
+      <li>`/foo$/D` matches `"foo"`, but not `"foo\n"`</li>
+    </ul>
+    <p>Notes:</p>
+    <ul>
+      <li>
+        The newline, that is optionally accepted is not captured. That is `/foo($)/` will match `['foo', '']`.
+        To capture the newline, you need to use `/foo($\n?)/`, which will capture `["foo\n", "\n"]`.
+      </li>
+      <li>If `m` flag is used, the `D` flag is ignored.</li>
+    </ul>
+  </li>
+  <li>
+    <p>`S` (uppercase) - `Study`</p>
+    <p>From PHP documentation:</p>
+    <p>
+      When a pattern is going to be used several times, it is worth spending more time analyzing it in order to speed
+      up the time taken for matching. When this modifier is set, then this extra analysis is performed. At present,
+      studying a pattern is useful only for non-anchored patterns that do not have a single fixed starting character.
+    </p>
+  </li>
+  <li>
+    <p>`U` (uppercase) - `Ungreedy`</p>
+    <p>
+      By default, quantifiers are "greedy", that is `*` and `+` will match as many characters as possible, `{3,9}`
+      will match 9 characters, if possible. Quantifiers can be marked as "ungreedy", if they're followed by `?`,
+      that is `*?` and `+?` will match as little characters as possible.
+    </p>
+    <p>
+      When this modifier is set, the "greediness" is inverted, that is quantifiers `with` `?` are greedy, and
+      quantifiers without it are not.
+    </p>
+    <p>Examples:</p>
+    <ul>
+      <li>`/fo+/` (identical to `/fo+?/U`) against `"foooo"` will match `["foooo"]`</li>
+      <li>`/fo+?/` (identical to `/fo+/U`) against `"foooo"` will match `["fo"]`</li>
+    </ul>
+  </li>
+  <li>
+    <p>`X` (uppercase) - `Extra`</p>
+    <p>By default, a backslash followed by a letter with no special meaning is treated as a literal.</p>
+    <p>
+      When this modifier is set, any meaningless escape causes an `MalformedPatternException`.
+    </p>
+  </li>
+  <li>
+    <p>`J` (uppercase) - `Info J Changed`</p>
+    <p>
+      By default, it's illegal to use duplicated subpattern names, even when they're exclusive, for example:
+      pattern `/((?&lt;a&gt;a)|(?&lt;b&gt;b))/` can only either match `"a"` or `"b"`, which means either group `a` or
+      `b` will be
+      matched, but not both.
+    </p>
+    <p>
+      When this modifier is set, duplicate subpattern names are allowed, and if two groups are matched, the named
+      group will be filled with the content of the later group.
+    </p>
+    <p>Examples:</p>
+    <ul>
+      <li>`/((?&lt;g&gt;a)|(?&lt;g&gt;b))/` raises `MalformedPatternException`</li>
+      <li>`/((?&lt;g&gt;a)|(?&lt;g&gt;b))/J` can match either `"a"` or `"b"`</li>
+      <li>`/(?&lt;g&gt;a)(?&lt;g&gt;b)/J` when matching `"ab"`, its result will be `[0=>"ab", "b"=>"b", 1=>"a",
+        2=>"b"]`
+      </li>
+    </ul>
+  </li>
+  <li>
+    <p>`u` (lowercase) - `UTF-8`</p>
   </li>
 </ul>
