@@ -35,9 +35,9 @@ class PatternBuilder
      * @param string $flags
      * @return PatternInterface
      */
-    public function bind(string $input, array $values, string $flags = ''): PatternInterface
+    public function bind(string $input, array $values, string $flags = null): PatternInterface
     {
-        return Prepare::build(new BindingParser($input, $values, new IgnoreStrategy()), $this->pcre, $flags);
+        return Prepare::build(new BindingParser($input, $values, new IgnoreStrategy()), $this->pcre, $flags ?? Flags::default());
     }
 
     /**
@@ -46,9 +46,9 @@ class PatternBuilder
      * @param string $flags
      * @return PatternInterface
      */
-    public function inject(string $input, array $values, string $flags = ''): PatternInterface
+    public function inject(string $input, array $values, string $flags = null): PatternInterface
     {
-        return Prepare::build(new InjectParser($input, $values, new IgnoreStrategy()), $this->pcre, $flags);
+        return Prepare::build(new InjectParser($input, $values, new IgnoreStrategy()), $this->pcre, $flags ?? Flags::default());
     }
 
     /**
@@ -56,9 +56,9 @@ class PatternBuilder
      * @param string $flags
      * @return PatternInterface
      */
-    public function prepare(array $input, string $flags = ''): PatternInterface
+    public function prepare(array $input, string $flags = null): PatternInterface
     {
-        return Prepare::build(new PreparedParser($input), $this->pcre, $flags);
+        return Prepare::build(new PreparedParser($input), $this->pcre, $flags ?? Flags::default());
     }
 
     /**
@@ -70,13 +70,14 @@ class PatternBuilder
         return new CompositePattern((new CompositePatternMapper($patterns))->createPatterns());
     }
 
-    public function format(string $pattern, array $tokens, string $flags = ''): PatternInterface
+    public function format(string $pattern, array $tokens, string $flags = null): PatternInterface
     {
-        return Prepare::build(new FormatParser($pattern, $tokens), $this->pcre, $flags);
+        return Prepare::build(new FormatParser($pattern, $tokens), $this->pcre, $flags ?? Flags::default());
     }
 
-    public function template(string $pattern, string $flags = ''): TemplatePattern
+    public function template(string $pattern, string $flags = null): TemplatePattern
     {
-        return new TemplatePattern($pattern, $flags, $this->pcre);
+        $flagsSet = $flags ?? ($this->pcre ? Flags::empty() : Flags::default());
+        return new TemplatePattern($pattern, $flagsSet, $this->pcre);
     }
 }

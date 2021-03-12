@@ -29,8 +29,8 @@ class CompositePatternMapperTest extends TestCase
 
         // then
         $expected = [
-            '/[A-Z]+/',
-            '/[A-Z0-9]+/',
+            '/[A-Z]+/uXSD',
+            '/[A-Z0-9]+/uXSD',
             '/[A-Z+]/i',
             '/[A-Za-z]+/u'
         ];

@@ -10,6 +10,11 @@ class Flags
 
     public static function default(): FlagSet
     {
+        // return Flags::empty()
+        //   ->unicode()
+        //   ->escapeRestriction()
+        //   ->patternAnalyzing()
+        //   ->distinctDollar();
         return new FlagSet('uXSD');
     }
 

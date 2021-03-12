@@ -3,6 +3,7 @@ namespace TRegx\CleanRegex\Internal;
 
 use InvalidArgumentException;
 use TRegx\CleanRegex\Exception\PatternMalformedPatternException;
+use TRegx\CleanRegex\Flags;
 use TRegx\CleanRegex\Internal\Delimiter\TrailingBackslashException;
 use TRegx\CleanRegex\PatternInterface;
 
@@ -28,7 +29,7 @@ class CompositePatternMapper
     private function mapToString($pattern): InternalPattern
     {
         if (\is_string($pattern)) {
-            return InternalPattern::standard($pattern);
+            return InternalPattern::standard($pattern, Flags::default());
         }
         if ($pattern instanceof PatternInterface) {
             return InternalPattern::pcre($pattern->delimited());

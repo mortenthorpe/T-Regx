@@ -215,4 +215,28 @@ class PatternTest extends TestCase
         // then
         $this->assertSame(['Foo', ',', 'Bar', ',', 'Cat'], $matches);
     }
+
+    /**
+     * @test
+     */
+    public function shouldCreatePattern_WithDefaultFlags()
+    {
+        // when
+        $pattern = pattern('')->delimited();
+
+        // then
+        $this->assertSame('//uXSD', $pattern);
+    }
+
+    /**
+     * @test
+     */
+    public function shouldCreatePattern_of_WithDefaultFlags()
+    {
+        // when
+        $pattern = Pattern::of('')->delimited();
+
+        // then
+        $this->assertSame('//uXSD', $pattern);
+    }
 }

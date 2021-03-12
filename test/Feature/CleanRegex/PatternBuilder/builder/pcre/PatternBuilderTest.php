@@ -18,7 +18,7 @@ class PatternBuilderTest extends TestCase
         $pattern = $pattern->delimited();
 
         // then
-        $this->assertSame('%You/her, (are|is) real\?\ \%\ \(or\ are\ you\ not\ real\?\) (you|her)%', $pattern);
+        $this->assertSame('%You/her, (are|is) real\?\ \%\ \(or\ are\ you\ not\ real\?\) (you|her)%uXSD', $pattern);
     }
 
     /**
@@ -35,7 +35,7 @@ class PatternBuilderTest extends TestCase
         $pattern = $pattern->delimited();
 
         // then
-        $this->assertSame('%You/her, (are|is) real\?\ \%\ \(or\ are\ you\ not\ real\?\) (you|her)%', $pattern);
+        $this->assertSame('%You/her, (are|is) real\?\ \%\ \(or\ are\ you\ not\ real\?\) (you|her)%uXSD', $pattern);
     }
 
     /**
@@ -52,7 +52,7 @@ class PatternBuilderTest extends TestCase
         $pattern = $pattern->delimited();
 
         // then
-        $this->assertSame('%You/her, (are|is) real\?\ \%\ \(or\ are\ you\ not\ real\?\) (you|her)%', $pattern);
+        $this->assertSame('%You/her, (are|is) real\?\ \%\ \(or\ are\ you\ not\ real\?\) (you|her)%uXSD', $pattern);
     }
 
     /**
@@ -134,5 +134,20 @@ class PatternBuilderTest extends TestCase
 
         // then
         $this->assertSame('%You/her, \s (her)%s', $pattern);
+    }
+
+    /**
+     * @test
+     */
+    public function shouldBuild_pcre_template_bind_DefaultFlags()
+    {
+        // given
+        $pattern = PatternBuilder::builder()->pcre()->template('%You/her, \s (her)%')->bind([]);
+
+        // when
+        $pattern = $pattern->delimited();
+
+        // then
+        $this->assertSame('%You/her, \s (her)%', $pattern);
     }
 }

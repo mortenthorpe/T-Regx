@@ -19,7 +19,7 @@ class PatternTest extends TestCase
         $pattern = $pattern->delimited();
 
         // then
-        $this->assertSame('#You/&her, (are|is) real\?\ \(or\ are\ you\ not\ real\?\) (you|her)#', $pattern);
+        $this->assertSame('#You/&her, (are|is) real\?\ \(or\ are\ you\ not\ real\?\) (you|her)#uXSD', $pattern);
     }
 
     /**
@@ -36,7 +36,7 @@ class PatternTest extends TestCase
         $pattern = $pattern->delimited();
 
         // then
-        $this->assertSame('#You/&her, (are|is) real\?\ \(or\ are\ you\ not\ real\?\) (you|her)#', $pattern);
+        $this->assertSame('#You/&her, (are|is) real\?\ \(or\ are\ you\ not\ real\?\) (you|her)#uXSD', $pattern);
     }
 
     /**
@@ -53,7 +53,7 @@ class PatternTest extends TestCase
         $pattern = $pattern->delimited();
 
         // then
-        $this->assertSame('#You/&her, (are|is) real\?\ \(or\ are\ you\ not\ real\?\) (you|her)#', $pattern);
+        $this->assertSame('#You/&her, (are|is) real\?\ \(or\ are\ you\ not\ real\?\) (you|her)#uXSD', $pattern);
     }
 
     /**
@@ -93,6 +93,26 @@ class PatternTest extends TestCase
 
         // then
         $this->assertSame('#%\:\\/\s*\:.#s', $delimited);
+    }
+
+    /**
+     * @test
+     */
+    public function shouldBuild_format_DefaultFlags(): void
+    {
+        // given
+        $pattern = Pattern::format('%%:%e%w:%c', [
+            '%%' => '%',
+            '%e' => '\\/',
+            '%w' => '\s*',
+            '%c' => '.',
+        ]);
+
+        // when
+        $delimited = $pattern->delimited();
+
+        // then
+        $this->assertSame('#%\:\\/\s*\:.#uXSD', $delimited);
     }
 
     /**
@@ -242,5 +262,20 @@ class PatternTest extends TestCase
 
         // then
         $this->assertSame('#^\* vs/ $#s', $delimited);
+    }
+
+    /**
+     * @test
+     */
+    public function shouldBuild_template_build_DefaultFlags(): void
+    {
+        // given
+        $pattern = Pattern::template('^@value vs/ $')->bind(['value' => '*']);
+
+        // when
+        $delimited = $pattern->delimited();
+
+        // then
+        $this->assertSame('#^\* vs/ $#uXSD', $delimited);
     }
 }

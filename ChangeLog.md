@@ -4,7 +4,21 @@ T-Regx Changelog
 Incoming
 --------
 
-* Soon
+* Features
+    * Added `Flags` facade, which allows you to compose flags builder-style. 
+* Breaking changes
+    * CleanRegex entry points implicitly use a default set of flags: `/uXSD`,
+        so "unicode", "extra", "study" and "dollar end-only". Entry points
+        with the default flags are:
+        * `pattern()`
+        * `Pattern::of()`
+        * `Pattern::inject()`/`Pattern::bind()`/`Pattern::prepare()`
+        * `Pattern::format()`/`Pattern::template()`
+        * Standard patterns in `Pattern::compose()`
+    * SafeRegex entry points and PCRE entry points don't have default flags:
+        * `preg::match()`, `preg::replace()`, etc.
+        * `Pattern::pcre()`
+        * `PatternBuilder::builder()->pcre()->*`
 
 Added in 0.10.2
 ---------------

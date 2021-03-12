@@ -12,17 +12,17 @@ class PatternBuilderTest extends TestCase
     public function shouldFormat()
     {
         // given
-        $patternBuilder = PatternBuilder::builder();
+        $builder = PatternBuilder::builder();
 
         // when
-        $pattern = $patternBuilder->format('(super):{%s.%d.%%}', [
+        $pattern = $builder->format('(super):{%s.%d.%%}', [
             '%s' => '\s+',
             '%d' => '\d+',
             '%%' => '%'
         ]);
 
         // then
-        $this->assertSame('/\(super\)\:\{\s+\.\d+\.%\}/', $pattern->delimited());
+        $this->assertSame('/\(super\)\:\{\s+\.\d+\.%\}/uXSD', $pattern->delimited());
     }
 
     /**
