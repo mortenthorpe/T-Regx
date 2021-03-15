@@ -5,7 +5,8 @@ Incoming
 --------
 
 * Features
-    * Added `Flags` facade, which allows you to compose flags builder-style. 
+    * Added `Flags` facade, which allows you to compose flags builder-style.
+      It also allows you to disable default flags.
 * Breaking changes
     * CleanRegex entry points implicitly use a default set of flags: `/uXSD`,
         so "unicode", "extra", "study" and "dollar end-only". Entry points
@@ -19,6 +20,7 @@ Incoming
         * `preg::match()`, `preg::replace()`, etc.
         * `Pattern::pcre()`
         * `PatternBuilder::builder()->pcre()->*`
+    * `match()->getIterator()` no longer preserves the keys of values (like `all()`)
 
 Added in 0.10.2
 ---------------
