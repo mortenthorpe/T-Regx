@@ -7,6 +7,8 @@ Incoming
 * Features
     * Added `Flags` facade, which allows you to compose flags builder-style.
       It also allows you to disable default flags.
+    * Added `Detail.usingDuplicateName().get()` #101
+    * Added `Detail.usingDuplicateName().matched()` #101
 * Breaking changes
     * CleanRegex entry points implicitly use a default set of flags: `/uXSD`,
         so "unicode", "extra", "study" and "dollar end-only". Entry points
