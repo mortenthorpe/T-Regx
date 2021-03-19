@@ -9,6 +9,8 @@ Incoming
       It also allows you to disable default flags.
     * Added `Detail.usingDuplicateName().get()` #101
     * Added `Detail.usingDuplicateName().matched()` #101
+    * Method `Pattern:template()->putLiteral(string)` now accepts `string` argument, allowing for inserting
+      arbitrary strings into the pattern.
 * Breaking changes
     * CleanRegex entry points implicitly use a default set of flags: `/uXSD`,
         so "unicode", "extra", "study" and "dollar end-only". Entry points
@@ -29,6 +31,7 @@ Incoming
     * Renamed `Pattern::template()->format()` to `Pattern::template()->mask()`
     * Renamed `Pattern::template()->formatting()` to `Pattern::template()->putMask()`
     * Renamed `Pattern::template()->literal()` to `Pattern::template()->putLiteral()`
+    * Method `putLiteral()` (previously `literal()`) now requires argument `'&'`, to escape `&` in-pattern token
 * Bug fixes
     * `Pattern::template()` quoted values incorrectly, when delimiter other than `/` or `%` was chosen.
 
