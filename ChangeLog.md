@@ -1,8 +1,8 @@
 T-Regx Changelog
 ================
 
-Incoming
---------
+Incoming in 0.11.0
+------------------
 
 * Features
     * Added `Flags` facade, which allows you to compose flags builder-style.
@@ -11,6 +11,7 @@ Incoming
     * Added `Detail.usingDuplicateName().matched()` #101
     * Method `Pattern:template()->putLiteral(string)` now accepts `string` argument, allowing for inserting
       arbitrary strings into the pattern.
+    * Added `Pattern::builder()`, which works similarly to how `PatternBuilder::builder()` worked.
 * Breaking changes
     * CleanRegex entry points implicitly use a default set of flags: `/uXSD`,
         so "unicode", "extra", "study" and "dollar end-only". Entry points
@@ -32,6 +33,7 @@ Incoming
     * Renamed `Pattern::template()->formatting()` to `Pattern::template()->putMask()`
     * Renamed `Pattern::template()->literal()` to `Pattern::template()->putLiteral()`
     * Method `putLiteral()` (previously `literal()`) now requires argument `'&'`, to escape `&` in-pattern token
+    * Removed `PatternBuilder::builder()`. Use `Pattern::builder()`
 * Bug fixes
     * `Pattern::template()` quoted values incorrectly, when delimiter other than `/` or `%` was chosen.
 
