@@ -4,8 +4,8 @@ namespace TRegx\CleanRegex;
 use TRegx\CleanRegex\Internal\CompositePatternMapper;
 use TRegx\CleanRegex\Internal\Prepared\Format\IgnoreStrategy;
 use TRegx\CleanRegex\Internal\Prepared\Parser\BindingParser;
-use TRegx\CleanRegex\Internal\Prepared\Parser\FormatParser;
 use TRegx\CleanRegex\Internal\Prepared\Parser\InjectParser;
+use TRegx\CleanRegex\Internal\Prepared\Parser\MaskParser;
 use TRegx\CleanRegex\Internal\Prepared\Parser\PreparedParser;
 use TRegx\CleanRegex\Internal\Prepared\Prepare;
 
@@ -70,14 +70,14 @@ class PatternBuilder
         return new CompositePattern((new CompositePatternMapper($patterns))->createPatterns());
     }
 
-    public function format(string $pattern, array $tokens, string $flags = null): PatternInterface
+    public function mask(string $mask, array $keywords, string $flags = null): PatternInterface
     {
-        return Prepare::build(new FormatParser($pattern, $tokens), $this->pcre, $flags ?? Flags::default());
+        return Prepare::build(new MaskParser($mask, $keywords), $this->pcre, $flags ?? Flags::default());
     }
 
     public function template(string $pattern, string $flags = null): TemplatePattern
     {
-        $flagsSet = $flags ?? ($this->pcre ? Flags::empty() : Flags::default());
-        return new TemplatePattern($pattern, $flagsSet, $this->pcre);
+        $flagSet = $flags ?? ($this->pcre ? Flags::empty() : Flags::default());
+        return new TemplatePattern($pattern, $flagSet, $this->pcre);
     }
 }
