@@ -11,7 +11,7 @@ use TRegx\CleanRegex\Internal\Prepared\Template\NoTemplate;
 use TRegx\CleanRegex\PatternInterface;
 use TRegx\CleanRegex\Template;
 
-class PatternBuilder
+class PatternBuilder implements PcrePatternBuilder
 {
     /** @var bool */
     private $pcre;
@@ -21,38 +21,21 @@ class PatternBuilder
         $this->pcre = $pcre;
     }
 
-    public function pcre(): PatternBuilder
+    public function pcre(): PcrePatternBuilder
     {
         return new self(true);
     }
 
-    /**
-     * @param string $input
-     * @param string[]|string[][] $values
-     * @param string $flags
-     * @return PatternInterface
-     */
     public function bind(string $input, array $values, string $flags = null): PatternInterface
     {
         return Prepare::build(new BindingParser($input, $values, new NoTemplate()), $this->pcre, $flags ?? Flags::default());
     }
 
-    /**
-     * @param string $input
-     * @param string[]|string[][] $values
-     * @param string $flags
-     * @return PatternInterface
-     */
     public function inject(string $input, array $values, string $flags = null): PatternInterface
     {
         return Prepare::build(new InjectParser($input, $values, new NoTemplate()), $this->pcre, $flags ?? Flags::default());
     }
 
-    /**
-     * @param (string|string[])[] $input
-     * @param string $flags
-     * @return PatternInterface
-     */
     public function prepare(array $input, string $flags = null): PatternInterface
     {
         return Prepare::build(new PreparedParser($input), $this->pcre, $flags ?? Flags::default());
