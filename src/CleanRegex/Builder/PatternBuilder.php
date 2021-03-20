@@ -1,12 +1,15 @@
 <?php
-namespace TRegx\CleanRegex;
+namespace TRegx\CleanRegex\Builder;
 
+use TRegx\CleanRegex\Flags;
 use TRegx\CleanRegex\Internal\Prepared\Parser\BindingParser;
 use TRegx\CleanRegex\Internal\Prepared\Parser\InjectParser;
 use TRegx\CleanRegex\Internal\Prepared\Parser\MaskParser;
 use TRegx\CleanRegex\Internal\Prepared\Parser\PreparedParser;
 use TRegx\CleanRegex\Internal\Prepared\Prepare;
 use TRegx\CleanRegex\Internal\Prepared\Template\NoTemplate;
+use TRegx\CleanRegex\PatternInterface;
+use TRegx\CleanRegex\Template;
 
 class PatternBuilder
 {
