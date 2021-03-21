@@ -2,7 +2,7 @@
 namespace Test\Feature\TRegx\CleanRegex\Builder\PatternBuilder;
 
 use PHPUnit\Framework\TestCase;
-use TRegx\CleanRegex\Exception\FormatMalformedPatternException;
+use TRegx\CleanRegex\Exception\MaskMalformedPatternException;
 use TRegx\CleanRegex\Pattern;
 
 class PatternTest extends TestCase
@@ -121,7 +121,7 @@ class PatternTest extends TestCase
     public function shouldBuild_mask_Trailing(): void
     {
         // then
-        $this->expectException(FormatMalformedPatternException::class);
+        $this->expectException(MaskMalformedPatternException::class);
         $this->expectExceptionMessage("Malformed pattern '\' assigned to keyword '%e'");
 
         // when
@@ -134,7 +134,7 @@ class PatternTest extends TestCase
     public function shouldBuild_mask_QuotedTrailing(): void
     {
         // then
-        $this->expectException(FormatMalformedPatternException::class);
+        $this->expectException(MaskMalformedPatternException::class);
         $this->expectExceptionMessage("Malformed pattern '\' assigned to keyword '%e'");
 
         // when

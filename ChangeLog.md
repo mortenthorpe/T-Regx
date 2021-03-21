@@ -35,6 +35,7 @@ Incoming in 0.11.0
     * Method `putLiteral()` (previously `literal()`) now requires argument `'&'`, to escape `&` in-pattern token
     * Removed `PatternBuilder::builder()`. Use `Pattern::builder()`
     * Removed `PatternBuilder::compose()`. Use `Pattern::compose()`
+    * Renamed `FormatMalformedPatternException` to `MaskMalformedPatternException`
 * Bug fixes
     * `Pattern::template()` quoted values incorrectly, when delimiter other than `/` or `%` was chosen.
 
