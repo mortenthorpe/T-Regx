@@ -12,6 +12,8 @@ Incoming in 0.11.0
     * Method `Pattern:template()->putLiteral(string)` now accepts `string` argument, allowing for inserting
       arbitrary strings into the pattern.
     * Added `Pattern::builder()`, which works similarly to how `PatternBuilder::builder()` worked.
+    * Added `Pattern::literal()` which creates an instance of a pattern with which matches an arbitrary string exactly,
+      even when `x` (`EXTENDED`) flag is used.
 * Breaking changes
     * CleanRegex entry points implicitly use a default set of flags: `/uXSD`,
         so "unicode", "extra", "study" and "dollar end-only". Entry points
