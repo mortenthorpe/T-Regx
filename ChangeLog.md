@@ -1,8 +1,13 @@
 T-Regx Changelog
 ================
 
-Incoming in 0.11.0
+Incoming in 0.11.1
 ------------------
+
+* Soon
+
+Added in 0.11.0
+---------------
 
 * Features
     * Added `Flags` facade, which allows you to compose flags builder-style.
